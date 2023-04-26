@@ -9,6 +9,7 @@ class WorldGen:
     from .annotations import Annotations
     from .camera import Camera
     # from .weather import Weather
+    # blender-gpt
     
     
 

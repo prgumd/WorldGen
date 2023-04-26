@@ -1,0 +1,21 @@
+---
+ roof: {roof_textures_url: ["https://ambientcg.com/view?id=Concrete017", "https://ambientcg.com/view?id=Concrete036", "https://ambientcg.com/view?id=Concrete019"],
+        roof_textures_name: ["ambientCG/Concrete017/1K-JPG", "ambientCG/Concrete036/1K-JPG", "ambientCG/Concrete019/1K-JPG"]
+        }
+ street: 
+
+ # can also use the following material urls and material names or specify your own:
+ # {"https://ambientcg.com/view?id=PavingStones087", "ambientCG/PavingStones087/1K-JPG"}
+ # {"https://ambientcg.com/view?id=PavingStones053", "ambientCG/PavingStones053/1K-JPG"}
+ # {"https://ambientcg.com/view?id=PavingStones065", "ambientCG/PavingStones065/1K-JPG"}
+ terrain: {material_url: "https://ambientcg.com/view?id=PavingStones087", material_name: "ambientCG/PavingStones087/1K-JPG"}
+
+
+ tree_objects: ["./assets/Tree/tree.obj"]
+ num_of_trees: 2
+ bench_objs: ['./assets/Bench/twinBenches.obj']
+ street_lamp_obj: './assets/StreetLamps/twoStreetLights2.obj'
+ traffic_light_obj: '/Users/riyakumari/blender_project/blender-prm-riya/src/objects/trafficLight/trafficLight.obj'
+ street_textures: {street_texture_url: "https://www.cgbookcase.com/textures/highway-road-cracks-01", street_texture_name: "cgbookcase/Highway Road Cracks 01/1K"}
+ building_textures: {building_texture_urls: ["https://ambientcg.com/view?id=Facade018A", "https://ambientcg.com/view?id=Facade001", "https://ambientcg.com/view?id=Facade020A", "https://ambientcg.com/view?id=Facade005", "https://ambientcg.com/view?id=Facade006"]
+         , building_texture_names: ["ambientCG/Facade018A/1K-JPG", "ambientCG/Facade001/1K-JPG", "ambientCG/Facade020A/1K-JPG", "ambientCG/Facade005/1K-JPG", "ambientCG/Facade006/1K-JPG"]}
