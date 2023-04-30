@@ -14,7 +14,7 @@ Welcome to WorldGen's documentation!
    :maxdepth: 1
    :caption: Contents:
    
-   /source/installation.rst
+   source/installation.rst
    
    
    
