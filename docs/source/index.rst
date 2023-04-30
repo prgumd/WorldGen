@@ -8,18 +8,14 @@ Welcome to WorldGen's documentation!
 
    This project is under active development.
 
-Contents
---------
+
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
    
-   Installation
-   Simulator
-   Camera
-   Annotations
-   Methods
+   docs/source/installation.rst
+   
    
    
    
