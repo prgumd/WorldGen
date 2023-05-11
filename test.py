@@ -2,18 +2,15 @@ import sys
 import bpy
 
 
-sys.path.append(
-    '/opt/homebrew/Caskroom/miniforge/base/lib/python3.9/site-packages')
-sys.path.append('/opt/homebrew/bin/')
+
 sys.path.append("./settings")
-sys.path.insert(1, '/path/to/application/app/folder')
 sys.path.append("./")
 import yaml
 from yaml.loader import SafeLoader
 
 from WorldGen import WorldGen
 
-with open('config.yaml') as f:
+with open('simulator.yaml') as f:
     data = yaml.load(f, Loader=SafeLoader)
     RENDER_DIR = data["render-dir"]
     BLEND_FILEPATH = data["blend-filepath"]
@@ -23,6 +20,11 @@ with open('config.yaml') as f:
     WEATHER = data["weather"]
     IMAGE_RESOLUTION = data["image-resolution"]
     OUTPUTS = data["outputs"]
+    SYSTEM_PATH = data["system-path"]
+    CAMERA = data["camera"]
+
+sys.path.append(SYSTEM_PATH)
+import Imath
 
 with open('texturesAndObjectsConfig.yaml') as f:
     data = yaml.load(f, Loader=SafeLoader)
@@ -35,6 +37,8 @@ with open('texturesAndObjectsConfig.yaml') as f:
     BENCH_OBJS = data["bench_objs"]
     STREET_TEXTURES = data["street_textures"]
     BUILDING_TEXTURES = data["building_textures"]
+
+
     
 def main():
     # initialize settings
@@ -44,10 +48,10 @@ def main():
 
 
     # create simulation
-    simulation = WorldGen.Simulator(BLEND_FILEPATH)
-    simulation.createScene(SCENE_COORDS[0], SCENE_COORDS[1], SCENE_COORDS[2], SCENE_COORDS[3], terrainTexture=TERRAIN_TEXTURES, 
-                           roofTextures=ROOF_TEXTURES, treeObjects=TREE_OBJECTS, numOfTrees=NUMBER_OF_TREES, trafficLightObject = TRAFFIC_LIGHT_OBJ, 
-                           streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES)
+    # simulation = WorldGen.Simulator(BLEND_FILEPATH)
+    # simulation.createScene(SCENE_COORDS[0], SCENE_COORDS[1], SCENE_COORDS[2], SCENE_COORDS[3], terrainTexture=TERRAIN_TEXTURES, 
+                           # roofTextures=ROOF_TEXTURES, treeObjects=TREE_OBJECTS, numOfTrees=NUMBER_OF_TREES, trafficLightObject = TRAFFIC_LIGHT_OBJ, 
+                           # streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES)
     # camera = simulation.addCamera() # doesn't work correctly yet
 
     # add hdri
@@ -59,9 +63,13 @@ def main():
     # Can now run simulation and get annotations
     # camera.makeActive()
     # # output_folder = "/Users/riyakumari/Desktop/world-gen/renders" #make sure this is the entire file path, not relative
-    # annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
-    # annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
-    # bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
+    if CAMERA == "":
+        camera = None
+    
+        # camera.makeActive()
+    annotations = WorldGen.Annotations(RENDER_DIR, camera, False)
+    annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
+    bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
    
     
 

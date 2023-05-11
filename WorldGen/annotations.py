@@ -6,14 +6,6 @@ import logging
 import bpy
 import array
 
-# sys.path.append(
-#     '/opt/homebrew/Caskroom/miniforge/base/lib/python3.11/site-packages')
-# sys.path.append('/opt/homebrew/bin/')
-sys.path.append('/opt/homebrew/lib/python3.11/site-packages/')
-# import '/opt/homebrew/lib/python3.11/site-packages/OpenEXR.cpython-311-darwin.so'
-import Imath
-# import OpenEXR
-
 import cv2
 import glob
 import matplotlib.pyplot as plt
@@ -21,25 +13,34 @@ import numpy as np
 from .camera import Camera
 from .utils import select_objects, deselect_all_objects, get_obj_with_name, assign_pass_indexes
 
-# depth, stereo, semantic seg
+
 class Annotations : 
-    def __init__(self, outputFolder, camera:Camera, is_fog:bool):
+    def __init__(self, outputFolder, camera, is_fog:bool):
         """ 
         Args:
             outputFolder (string): File path to store generated images. 
             camera (Camera)
         """
         self.outputFilePath = outputFolder
+        print("file path : ", os.path.exists(self.outputFilePath))
+        if not os.path.exists(self.outputFilePath):
+            os.makedirs(self.outputFilePath)
+
+
+        if camera==None:
+            camera_names = [cam.name for cam in bpy.data.cameras]
+            camera = bpy.data.objects[camera_names[0]]
         self.camera = camera
         self.is_fog = is_fog
+        self.view_layer = bpy.context.scene.view_layers[0]
 
-        bpy.context.scene.view_layers["ViewLayer"].use_pass_z = True
+        self.view_layer.use_pass_z = True
         bpy.context.view_layer.cycles.denoising_store_passes = True
-        bpy.context.scene.view_layers["ViewLayer"].use_pass_normal = True
-        bpy.context.scene.view_layers["ViewLayer"].use_pass_object_index = True
+        self.view_layer.use_pass_normal = True
+        self.view_layer.use_pass_object_index = True
 
     def generateOutputs(self, arrOfOutputs, classNames):
-        # arrOfOutputs (string[])
+
         # classNames - if semantic segmentation, then must specify class names
         # if fog, every channel creates its own mix node
 
@@ -63,12 +64,11 @@ class Annotations :
         if 'flow' in arrOfOutputs:
             self.generateFlow()
 
-        bpy.ops.render.render(write_still=True)
+        bpy.ops.render.render(animation=True, write_still=True)
         if 'depth' in arrOfOutputs:
             self.convertDepthToPlasma()
         if 'flow' in arrOfOutputs:
             folder_dir = self.outputFilePath + "/flow/metric/"
-            # self.convertFlowToFlo()
 
         
     def generateDepth(self, renderEngine="CYCLES"):
@@ -135,7 +135,6 @@ class Annotations :
         fileOutput.base_path = self.outputFilePath + "/stereo/"
         fileOutput.format.file_format = "PNG"
 
-        # bpy.ops.render.render('INVOKE_DEFAULT', write_still=True)
     
     def generateSemanticSeg(self, classNames):
         deselect_all_objects()
@@ -214,11 +213,12 @@ class Annotations :
     def convertDepthToPlasma(self):
         dir = self.outputFilePath + "/depth/metric/"
         save_dir = self.outputFilePath+"/depth/"
+
         # loop through images in the directory
         for filename in os.listdir(dir):
             img = self.get_exr_rgb(dir+filename)
-            if not os.path.isdir(save_dir+"viz"):
-                os.mkdir(save_dir+"viz")
+            if not os.path.isdir(save_dir+"viz/"):
+                os.mkdir(save_dir+"viz/")
             filename = os.path.splitext(os.path.basename(filename))[0]
             im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             img= cv2.applyColorMap(im, cv2.COLORMAP_PLASMA)
@@ -229,7 +229,7 @@ class Annotations :
         # convert colour to sRGB
         img = np.where(img<=0.0031308, 12.92*img, 1.055*np.power(img, 1/2.4) - 0.055)
         return (img*255).astype(np.uint8)
-        
+
     def Exr2Flow(self, exrfile):
         file = OpenEXR.InputFile(exrfile)
 
@@ -271,139 +271,4 @@ class Annotations :
                 TAG_STRING = 'PIEH'
                 Img, Width, Height = self.Exr2Flow(exrfile)
                 self.WriteFloFile(exrfile, Img, TAG_STRING, Width, Height)
-                
-#     def generateSurfaceNormals(self, renderEngine="CYCLES"):
-#         """ 
-#         Generates surface normals for selected camera
-#         """
-
-#         tree = bpy.context.scene.node_tree
-#         links = tree.links
-
-#         # clear existing nodes
-#         for n in tree.nodes:
-#             tree.nodes.remove(n)
-        
-#         # create input render layer node
-#         rl = tree.nodes.new('CompositorNodeRLayers')
-#         fileOutput1 = tree.nodes.new(type="CompositorNodeOutputFile")
-#         links.new(rl.outputs[0], fileOutput1.inputs[0])
-
-#         bpy.context.scene.render.engine = 'BLENDER_WORKBENCH'
-#         shading = bpy.context.scene.display.shading
-#         shading.light = 'MATCAP'
-#         shading.color_type = 'OBJECT'
-#         shading.studio_light = 'check_normal+y.exr'
-        
-#         bpy.context.scene.view_settings.view_transform = 'Standard'
-     
-#     
-        
-
-
-
-# # def generateSurfaceNormals(path_dir):
-# #     """ Generates surface normal map of the animation.
-
-# #     Args:
-# #         path_dir (str): The file path to store generated depth map. Subfolders jpeg and open-exr are created as well.
-
-# #     Returns:
-# #         None
-# #     """
-# #     bpy.context.scene.use_nodes = True
-# #     tree = bpy.context.scene.node_tree
-# #     links = tree.links
-
-# #     bpy.context.scene.view_layers["ViewLayer"].use_pass_normal = True
-
-# #     # create nodes
-# #     rl2 = tree.nodes.new("CompositorNodeRLayers")
-# #     multiply = tree.nodes.new(type="CompositorNodeMixRGB")
-# #     multiply.blend_type = "MULTIPLY"
-# #     add = tree.nodes.new(type="CompositorNodeMixRGB")
-# #     add.blend_type = "ADD"
-# #     invert = tree.nodes.new(type="CompositorNodeInvert")
-# #     fileOutput3 = tree.nodes.new(type="CompositorNodeOutputFile")
-# #     fileOutput4 = tree.nodes.new(type="CompositorNodeOutputFile")
-        
-# #     # create links
-# #     links.new(rl2.outputs[3], multiply.inputs[1])
-# #     links.new(multiply.outputs[0], add.inputs[1])
-# #     links.new(add.outputs[0], invert.inputs[1])
-# #     links.new(invert.outputs[0], fileOutput3.inputs[0])
-# #     links.new(invert.outputs[0], fileOutput4.inputs[0])
-
-
-# #     # render it
-# #     fileOutput3.format.file_format = 'JPEG'
-# #     fileOutput3.base_path = path_dir + "/surface_normal/jpeg"
     
-# #     fileOutput4.format.file_format = 'OPEN_EXR'
-# #     fileOutput4.base_path = path_dir + "/surface_normal/open-exr"
-    
-    
-
-# # def generateOpticalFlow(path_dir):
-# #     """ Generates optical flow map of the animation.
-
-# #     Args:
-# #         path_dir (str): File path to store generated images. A folder named /optical_flow/open-exr is created with the generated png images.
-
-# #     Returns:
-# #         None
-# #     """
-    
-# #     settings.set_render_engine('CYCLES')
-    
-# #     bpy.context.scene.use_nodes = True
-# #     tree = bpy.context.scene.node_tree
-# #     links = tree.links
-# #     print("tree: ", tree)
-
-        
-# #     bpy.context.scene.view_layers["ViewLayer"].use_pass_vector = True
-# #     r3 = tree.nodes.new("CompositorNodeRLayers")
-# #     fileOutput5 = tree.nodes.new(type="CompositorNodeOutputFile")
-# #     links.new(r3.outputs["Vector"], fileOutput5.inputs[0])
-    
-# #     fileOutput5.format.file_format = 'OPEN_EXR'
-# #     fileOutput5.base_path = path_dir + "/optical_flow/open-exr"
-# #     print("optical flow ..., ", path_dir)
-# # #    bpy.context.scene.render.filepath = path_dir + "/optical_flow/"
-# # #    bpy.ops.render.render(animation=True)
-    
-# # #    bpy.ops.wm.save_as_mainfile(filepath="/Users/riyakumari/blender_project/blender-prm-riya/src/opticalFlow.blend")
-    
-    
-    
-# # def generate360(path_dir, cam):
-# #     """ Generates 360 image for each frame of the animation.
-
-# #     Args:
-# #         path_dir (str): File path to store generated images. A folder named /360 is created with png images.
-# #         cam (bpy_types.Object): the camera that captures the 360 image.
-        
-# #     Returns:
-# #         None
-# #     """
-    
-# #     settings.set_render_engine('CYCLES')
-# #     cam.data.type = 'PANO'
-# #     cam.data.cycles.panorama_type = "EQUIRECTANGULAR"
-    
-# #     bpy.context.scene.render.filepath = path_dir + "/360/frame"
-# #     bpy.context.scene.render.image_settings.file_format = "PNG"
-# #     bpy.ops.render.render(animation=True)
-
-    
-    
-    
-
-        
-    
-    
-        
-
-    
-

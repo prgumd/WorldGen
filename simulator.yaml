@@ -1,0 +1,14 @@
+---
+ system-path: "/home/chahatdeep/.local/lib/python3.8/site-packages"
+ render-dir: "/home/chahatdeep/git_cloned/actual_worldgen/WorldGen/render/" # required
+ blend-filepath: "/home/chahatdeep/git_cloned/actual_worldgen/WorldGen/falling_cubes.blend" # required
+ render-engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
+ image-resolution: [1024, 1024, 3]
+ scene-coordinates: [-122.39622,37.79148,-122.38925,37.79431]
+ outputs: ["depth"]
+ # is_suburbs:
+ camera: ""
+ weather:
+   - midday
+   - noFog  
+ class-names: ["Trees", "StreetLamps", "TwinBenches", "buildings", "roads", "Terrain", "buildings"]

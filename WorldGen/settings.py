@@ -3,9 +3,6 @@ import sys
 import random
 import bpy
 
-sys.path.append(
-    '/opt/homebrew/Caskroom/miniforge/base/lib/python3.9/site-packages')
-sys.path.append('/opt/homebrew/bin/')
 
 
 def set_image_resolution(x, y, percent):

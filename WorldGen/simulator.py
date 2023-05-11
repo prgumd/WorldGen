@@ -341,14 +341,17 @@ class Simulator:
                 
                 # bpy.ops.material.new()
                 material_url = list_of_building_urls[idx]
-                material = list_of_building_materials[idx] + ".00" + str(idx)
+                if idx == 0:
+                    material = list_of_building_materials[idx]
+                else:
+                    material = list_of_building_materials[idx] + ".00" + str(idx)
                 bpy.ops.material.new()
                 bpy.ops.object.lily_surface_import(url=material_url)
                 
-                bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 20
-                bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 20
-                # bpy.ops.object.lily_surface_import(url=material_url)
-                bpy.data.objects[building].active_material = material
+                # bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 20
+                # bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 20
+                # # bpy.ops.object.lily_surface_import(url=material_url)
+                # bpy.data.objects[building].active_material = bpy.data.materials[material]
             
                 # apply material to buildings in the group
                 bpy.ops.uv.smart_project()
@@ -365,7 +368,7 @@ class Simulator:
             
             
                 
-            return
+            
             self.deselectObjects()
 
     def addTextureToTerrain(self, material_url, material_name):

@@ -15,7 +15,7 @@
  num_of_trees: 2
  bench_objs: ['./assets/Bench/twinBenches.obj']
  street_lamp_obj: './assets/StreetLamps/twoStreetLights2.obj'
- traffic_light_obj: '/Users/riyakumari/blender_project/blender-prm-riya/src/objects/trafficLight/trafficLight.obj'
+ traffic_light_obj: '~/git_cloned/actual_worldgen/WorldGen/src/objects/trafficLight/trafficLight.obj'
  street_textures: {street_texture_url: "https://www.cgbookcase.com/textures/highway-road-cracks-01", street_texture_name: "cgbookcase/Highway Road Cracks 01/1K"}
  building_textures: {building_texture_urls: ["https://ambientcg.com/view?id=Facade018A", "https://ambientcg.com/view?id=Facade001", "https://ambientcg.com/view?id=Facade020A", "https://ambientcg.com/view?id=Facade005", "https://ambientcg.com/view?id=Facade006"]
          , building_texture_names: ["ambientCG/Facade018A/1K-JPG", "ambientCG/Facade001/1K-JPG", "ambientCG/Facade020A/1K-JPG", "ambientCG/Facade005/1K-JPG", "ambientCG/Facade006/1K-JPG"]}
