@@ -1,10 +1,10 @@
 ---
- render-dir: "/Users/riyakumari/Desktop/world-gen/render/" # required
- blend-filepath: "/Users/riyakumari/Desktop/world-gen/test.blend" # required
+ render-dir: "/Users/riyakumari/WorldGen/render/" # required
+ blend-filepath: "/Users/riyakumari/WorldGen/test.blend" # required
  render-engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
- image-resolution: [1024, 1024, 3]
+ image-resolution: [1024, 1024, 100] 
  scene-coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- outputs: ["depth", "flow"]
+ outputs: ["depth"]
  is_suburbs: False
  two_way_streets: True
  weather:

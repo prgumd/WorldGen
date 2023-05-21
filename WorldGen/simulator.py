@@ -83,12 +83,12 @@ class Simulator:
         
         street_lamp_collection = bpy.data.collections.new("StreetLamps")
         main_collection.children.link(street_lamp_collection)
-        self.addingToSidewalks("street_lamps", streetLampObjects, street_lamp_collection, 80, intersections)
+        self.addingToSidewalks("street_lamps", streetLampObjects, street_lamp_collection, 2, intersections)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         twin_bench_collection = bpy.data.collections.new("TwinBenches")
         main_collection.children.link(twin_bench_collection)
-        self.addingToSidewalks("benches", benchObjects, twin_bench_collection, 20, intersections)
+        self.addingToSidewalks("benches", benchObjects, twin_bench_collection, 2, intersections)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         self.addTextureToStreets(streetTextures["street_texture_url"], streetTextures["street_texture_name"])
@@ -141,14 +141,14 @@ class Simulator:
             bpy.ops.mesh.select_all(action='DESELECT')
             
             animation_count = 20
-            # coords = []
-            # for i,v in enumerate(vertices):
-            #     # if i > 20:
-            #     v.select_set(True)
-            #     world_coords = street.matrix_world @ v.co
-            #     coords.append(world_coords)
-                    # if animation_count + 20 == i:
-                    #     break
+            coords = []
+            for i,v in enumerate(vertices):
+                # if i > 20:
+                v.select_set(True)
+                world_coords = street.matrix_world @ v.co
+                coords.append(world_coords)
+                if animation_count + 20 == i:
+                    break
             # https://blender.stackexchange.com/questions/6750/poly-bezier-curve-from-a-list-of-coordinates
             # create the Curve Datablock
             curveData = bpy.data.curves.new('cameraCurve', type='CURVE')

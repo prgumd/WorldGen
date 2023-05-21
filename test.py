@@ -51,7 +51,8 @@ def main():
                            roofTextures=ROOF_TEXTURES, treeObjects=TREE_OBJECTS, numOfTrees=NUMBER_OF_TREES, trafficLightObject = TRAFFIC_LIGHT_OBJ, 
                            streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES, roofObjects=ROOF_OBJECTS)
     
-    # camera = simulation.addCamera() # doesn't work correctly yet
+    camera = simulation.addCamera() # doesn't work correctly yet
+    # print(camera)
 
     # add hdri
     # simulation.addWeather(WEATHER[0], WEATHER[1])
@@ -62,7 +63,7 @@ def main():
     # Can now run simulation and get annotations
     # camera.makeActive()
     # # output_folder = "/Users/riyakumari/Desktop/world-gen/renders" #make sure this is the entire file path, not relative
-    camera = None
+    # camera = None
     annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
     annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)

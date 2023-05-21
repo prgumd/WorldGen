@@ -45,6 +45,7 @@ class Annotations :
 
         bpy.context.scene.use_nodes = True #common
         self.tree = bpy.context.scene.node_tree
+        self.camera.makeActive()
 
         bpy.context.scene.render.engine = "CYCLES"
         bpy.context.scene.cycles.samples = 8
