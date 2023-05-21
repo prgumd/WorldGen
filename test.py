@@ -24,6 +24,7 @@ with open('config.yaml') as f:
     IMAGE_RESOLUTION = data["image-resolution"]
     OUTPUTS = data["outputs"]
     TWO_WAY_STREETS = data["two_way_streets"]
+    ONLY_RENDER_ANNOTATIONS = data["only-render-annotations"]
 
 with open('texturesAndObjectsConfig.yaml') as f:
     data = yaml.load(f, Loader=SafeLoader)
@@ -39,20 +40,21 @@ with open('texturesAndObjectsConfig.yaml') as f:
     ROOF_OBJECTS = data["roof_objs"]
     
 def main():
-    # initialize settings
-    WorldGen.set_render_engine(RENDER_ENGINE)
-    WorldGen.set_metadata_properties()
-    WorldGen.set_image_resolution(IMAGE_RESOLUTION[0], IMAGE_RESOLUTION[1], IMAGE_RESOLUTION[2])
+    if not ONLY_RENDER_ANNOTATIONS:
+        # initialize settings
+        WorldGen.set_render_engine(RENDER_ENGINE)
+        WorldGen.set_metadata_properties()
+        WorldGen.set_image_resolution(IMAGE_RESOLUTION[0], IMAGE_RESOLUTION[1], IMAGE_RESOLUTION[2])
 
 
-    # create simulation
-    simulation = WorldGen.Simulator(BLEND_FILEPATH, TWO_WAY_STREETS)
-    simulation.createScene(SCENE_COORDS[0], SCENE_COORDS[1], SCENE_COORDS[2], SCENE_COORDS[3], terrainTexture=TERRAIN_TEXTURES, 
-                           roofTextures=ROOF_TEXTURES, treeObjects=TREE_OBJECTS, numOfTrees=NUMBER_OF_TREES, trafficLightObject = TRAFFIC_LIGHT_OBJ, 
-                           streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES, roofObjects=ROOF_OBJECTS)
+        # create simulation
+        simulation = WorldGen.Simulator(BLEND_FILEPATH, TWO_WAY_STREETS)
+        simulation.createScene(SCENE_COORDS[0], SCENE_COORDS[1], SCENE_COORDS[2], SCENE_COORDS[3], terrainTexture=TERRAIN_TEXTURES, 
+                            roofTextures=ROOF_TEXTURES, treeObjects=TREE_OBJECTS, numOfTrees=NUMBER_OF_TREES, trafficLightObject = TRAFFIC_LIGHT_OBJ, 
+                            streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES, roofObjects=ROOF_OBJECTS)
+        
+        camera = simulation.addCamera() # doesn't work correctly yet
     
-    camera = simulation.addCamera() # doesn't work correctly yet
-    # print(camera)
 
     # add hdri
     # simulation.addWeather(WEATHER[0], WEATHER[1])
@@ -63,7 +65,8 @@ def main():
     # Can now run simulation and get annotations
     # camera.makeActive()
     # # output_folder = "/Users/riyakumari/Desktop/world-gen/renders" #make sure this is the entire file path, not relative
-    # camera = None
+    if ONLY_RENDER_ANNOTATIONS:
+        camera = None
     annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
     annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)

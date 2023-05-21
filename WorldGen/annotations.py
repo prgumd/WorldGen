@@ -5,6 +5,7 @@ import random
 import logging
 import bpy
 import array
+import platform
 
 # sys.path.append(
 #     '/opt/homebrew/Caskroom/miniforge/base/lib/python3.11/site-packages')
@@ -30,13 +31,22 @@ class Annotations :
             camera (Camera)
         """
         self.outputFilePath = outputFolder
+        if camera == None:
+            camera_names = [ob.name for ob in bpy.data.objects if ob.type == 'CAMERA']
+            assert(len(camera_names) > 0), "No camera was found"
+            camera = Camera(camera_names[0])
         self.camera = camera
         self.is_fog = is_fog
 
-        bpy.context.scene.view_layers["ViewLayer"].use_pass_z = True
+        view_layer_name = "ViewLayer"
+
+        if platform.system() == "Linux":
+            view_layer_name = "View Layer"
+        
+        bpy.context.scene.view_layers[view_layer_name].use_pass_z = True
         bpy.context.view_layer.cycles.denoising_store_passes = True
-        bpy.context.scene.view_layers["ViewLayer"].use_pass_normal = True
-        bpy.context.scene.view_layers["ViewLayer"].use_pass_object_index = True
+        bpy.context.scene.view_layers[view_layer_name].use_pass_normal = True
+        bpy.context.scene.view_layers[view_layer_name].use_pass_object_index = True
 
     def generateOutputs(self, arrOfOutputs, classNames):
         # arrOfOutputs (string[])
@@ -64,7 +74,7 @@ class Annotations :
         if 'flow' in arrOfOutputs:
             self.generateFlow()
 
-        bpy.ops.render.render(write_still=True)
+        bpy.ops.render.render(animation=True, write_still=True)
         if 'depth' in arrOfOutputs:
             self.convertDepthToPlasma()
         if 'flow' in arrOfOutputs:
@@ -214,16 +224,19 @@ class Annotations :
 
     def convertDepthToPlasma(self):
         dir = self.outputFilePath + "/depth/metric/"
-        save_dir = self.outputFilePath+"/depth/"
+        save_dir = self.outputFilePath+"depth/"
         # loop through images in the directory
+        i = 0
         for filename in os.listdir(dir):
             img = self.get_exr_rgb(dir+filename)
             if not os.path.isdir(save_dir+"viz"):
                 os.mkdir(save_dir+"viz")
+            save_dir = save_dir+"viz/"
             filename = os.path.splitext(os.path.basename(filename))[0]
             im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             img= cv2.applyColorMap(im, cv2.COLORMAP_PLASMA)
-            cv2.imwrite(save_dir + "viz" +filename + ".png", img)
+            i += 1
+            cv2.imwrite(save_dir + "depth_viz" + str(i) + ".png", img)
 
     def get_exr_rgb(self, path):
         img = cv2.imread(path,  cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
