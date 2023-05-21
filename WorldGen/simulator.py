@@ -12,8 +12,6 @@ from scipy import spatial
 
 
 class Simulator:
-
-    from .weather import addWeather
     
     def __init__(self, blendFilePath, isTwoWay=True):
         """
@@ -34,7 +32,7 @@ class Simulator:
         self.pass_indexes = []
 
     def createScene(self, minLong, minLat, maxLong, maxLat, isSuburbs=False, terrainTexture={'material_url': '', "material_name": ''}, 
-                    roofTextures=[], streetTextures={}, treeObjects=[], numOfTrees = 2, benchObjects=[], streetLampObjects=[], trafficLightObject='', buildingTextures={}):
+                    roofTextures=[], streetTextures={}, treeObjects=[], numOfTrees = 2, benchObjects=[], streetLampObjects=[], trafficLightObject='', buildingTextures={}, roofObjects=[]):
         '''
         Creates scene given latitude and longitude, flat roofs are imported by default
 
@@ -54,12 +52,16 @@ class Simulator:
 
         self.addTextureToBuildings(buildingTextures["building_texture_urls"], buildingTextures["building_texture_names"])
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
-        return
+        
         self.addTextureToTerrain(terrainTexture["material_url"], terrainTexture["material_name"])
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         self.addTextureToRoofs(roof_textures_url=roofTextures["roof_textures_url"], roof_textures_name=roofTextures["roof_textures_name"])
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+
+        self.addRooftopObjects(roofObjects=roofObjects)
+        bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+
 
         self.addStreets()
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
@@ -78,7 +80,7 @@ class Simulator:
 
         intersections = self.getIntersections("secondary_roads.000")
         # self.addTrafficLights(collection, traffic_light_obj=trafficLightObject)
-
+        
         street_lamp_collection = bpy.data.collections.new("StreetLamps")
         main_collection.children.link(street_lamp_collection)
         self.addingToSidewalks("street_lamps", streetLampObjects, street_lamp_collection, 80, intersections)
@@ -91,10 +93,13 @@ class Simulator:
 
         self.addTextureToStreets(streetTextures["street_texture_url"], streetTextures["street_texture_name"])
 
+        # self.hide_center_road()
         # for obj_name in self.object_names:
         #     create_collection(name)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+    
 
+        
     def addCamera(self):
         bpy.ops.object.mode_set(mode = 'OBJECT')
         self.deselectObjects()
@@ -136,12 +141,12 @@ class Simulator:
             bpy.ops.mesh.select_all(action='DESELECT')
             
             animation_count = 20
-            coords = []
-            for i,v in enumerate(vertices):
-                # if i > 20:
-                v.select_set(True)
-                world_coords = street.matrix_world @ v.co
-                coords.append(world_coords)
+            # coords = []
+            # for i,v in enumerate(vertices):
+            #     # if i > 20:
+            #     v.select_set(True)
+            #     world_coords = street.matrix_world @ v.co
+            #     coords.append(world_coords)
                     # if animation_count + 20 == i:
                     #     break
             # https://blender.stackexchange.com/questions/6750/poly-bezier-curve-from-a-list-of-coordinates
@@ -323,7 +328,8 @@ class Simulator:
 
         for idx, group in enumerate(grouped_buildings):
 
-            
+            material_url = list_of_building_urls[idx]
+            material = list_of_building_materials[idx]
             # select all buildings in a group
             for building in group:
                 bpy.data.objects[building].select_set(True)
@@ -339,33 +345,28 @@ class Simulator:
                     continue
                 bpy.context.object.active_material = bpy.data.materials['wall']
                 
-                # bpy.ops.material.new()
-                material_url = list_of_building_urls[idx]
-                material = list_of_building_materials[idx] + ".00" + str(idx)
+                
                 bpy.ops.material.new()
                 bpy.ops.object.lily_surface_import(url=material_url)
                 
-                bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 20
-                bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 20
-                # bpy.ops.object.lily_surface_import(url=material_url)
-                bpy.data.objects[building].active_material = material
+                # bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 20
+                # bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 20
+                # bpy.data.objects[building].active_material = bpy.data.materials[material]
             
                 # apply material to buildings in the group
                 bpy.ops.uv.smart_project()
                 bpy.data.objects[building].select_set(False)
 
+            # print("materials :", bpy.data.materials)
+            # material = set(material)
+            for mat in bpy.data.materials:  
+                mat2 = mat.name.split('.')
             
-            for mat in bpy.data.materials:
-                if material in mat.name:
-                    material = mat.name
-                    print("material", material)
-                    bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 20
-                    bpy.data.materials[material].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 20
+                if material in mat2:
+                    bpy.data.materials[mat.name].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 15
+                    bpy.data.materials[mat.name].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 15
                     bpy.ops.object.mode_set(mode = 'OBJECT')
             
-            
-                
-            return
             self.deselectObjects()
 
     def addTextureToTerrain(self, material_url, material_name):
@@ -457,28 +458,27 @@ class Simulator:
         '''
 
         self.deselectObjects()
-        roads = None
-        if self.isTwoWay:
-            roads = ['primary', 'service', 'tertiary', 'unclassified', 'secondary_roads.001', 'secondary_roads.002']
-        else:
-            roads = ['primary', 'service', 'tertiary', 'unclassified']
+        # roads = None
+        # if "road" in or "path" in
 
         
         view_layer = bpy.context.view_layer
 
         roadObjects = []
 
-        for i in roads:
-            nonMeshObjExists = False
-            for collection in bpy.data.collections:
-                if "osm" in collection.name:
-                    for obj in collection.all_objects:
-                        if i in obj.name:
-                            obj.select_set(True)
-                            roadObjects.append(obj)
-                            view_layer.objects.active = obj
-                            if obj != "MESH":
-                                nonMeshObjExists = True
+        
+        nonMeshObjExists = False
+        for collection in bpy.data.collections:
+            if "osm" in collection.name:
+                for obj in collection.all_objects:
+                    if ("road" in obj.name) or ("path" in obj.name):
+                        # roads.append(obj)
+                        obj.select_set(True)
+                        roadObjects.append(obj)
+                        view_layer.objects.active = obj
+                        if obj != "MESH":
+                            nonMeshObjExists = True
+        print("roadObjects",roadObjects)
      
 
         if nonMeshObjExists:
@@ -486,7 +486,7 @@ class Simulator:
             
 
         self.deselectObjects()
-
+        material_index = None
         for obj in roadObjects:
             obj.select_set(True)
             view_layer.objects.active = obj     
@@ -494,17 +494,17 @@ class Simulator:
             bpy.ops.object.mode_set(mode = 'EDIT')
             bpy.ops.mesh.select_all(action='SELECT')
             
-
-            # bpy.ops.material.new()
             bpy.ops.object.lily_surface_import(url=roadTextureUrl)
             bpy.data.materials[roadTextureName].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 4.6
-
-            for i in range(len(obj.material_slots)):
-                if roadTextureUrl in obj.material_slots[i].name:
-                    bpy.context.object.active_material_index = i
-                    break
+            if material_index == None:
+                for i in range(len(obj.material_slots)):
+                    if roadTextureName in obj.material_slots[i].name:
+                        bpy.context.object.active_material_index = i
+                        material_index = i
+                        break
             
-            bpy.context.object.active_material_index = i
+            
+            bpy.context.object.active_material_index = material_index
             bpy.ops.object.material_slot_assign()
             bpy.ops.object.mode_set(mode = 'OBJECT')
             obj.select_set(False)
@@ -1064,6 +1064,87 @@ class Simulator:
                 traffic_light.rotation_euler[2] = theta1 + 2.40
 
 
+    def addRooftopObjects(self, roofObjects):
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+        self.deselectObjects()
+
+        # select roofs and store in an array
+        roofs = []
+        for collection in bpy.data.collections:
+            if "osm_buildings" in collection.name:
+                buildings = collection.name
+                active_obj = bpy.data.objects[buildings]
+                bpy.context.view_layer.objects.active = active_obj
+                myObjs = bpy.context.active_object
+                for o in myObjs.children:
+                    if "roof" in o.name:
+                        roofs.append(o)
+
+        self.deselectObjects()
+
+        # go through each roof and subdivide 
+        for roof in roofs:
+            bpy.context.view_layer.objects.active = roof
+            roof.select_set(True)
+
+            bpy.ops.object.mode_set(mode = 'EDIT')
+            bpy.ops.mesh.select_all(action='SELECT')
+
+            bpy.ops.mesh.poke()
+            bpy.ops.mesh.subdivide()
+            
+            context = bpy.context
+            me = context.edit_object.data
+            bm = bmesh.from_edit_mesh(me)
+            vertices = [v for v in bm.verts]            
+            vertices = list(filter(lambda v : len(v.link_edges)>4, vertices))
+            rot = 0
+
+            if len(vertices) > 6:
+                num_of_objects = random.randint(0, int(len(vertices)/2))
+            else: num_of_objects == len(vertices)
+
+            all_objs_added = []
+            for num in range(num_of_objects):
+        
+                i = random.randint(0, len(roofObjects)-1)
+                bpy.ops.import_scene.obj(filepath=roofObjects[i], filter_glob=".fbx;*.mtl", axis_forward='-Z', axis_up='Y')
+
+                obj = bpy.context.selected_objects
+                a = 0 #increment this if a particular vertex location is overlapping with an object
+                is_overlapping = True
+                skip = False
+                while(is_overlapping):
+                    if a+num >= len(vertices): 
+                        skip = True 
+                        break
+                    v = vertices[num+a]
+                    coords = (roof.matrix_world @ v.co)
+                    obj[0].location = [coords[0], coords[1], coords[2]]
+                    if len(all_objs_added)==0: is_overlapping=False
+                    for o in all_objs_added:
+                        if not checkOverlap(o.name, obj[0].name):
+                            is_overlapping = False
+                            a+=1
+                if skip or is_overlapping:
+                    obj[0].select_set(False)
+                    continue
+                obj[0].rotation_euler = [math.pi/2, 0, rot]
+                obj[0].scale = [0.5, 0.5, 0.5]
+
+                rot = rot + math.pi/4
+
+                obj[0].select_set(False)                   
+                all_objs_added.append(obj[0])
+            bpy.ops.object.mode_set(mode = 'OBJECT')
+            self.deselectObjects()
+
+
+    def hide_center_road(self):
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+        self.deselectObjects()
+
+        
 
 
 

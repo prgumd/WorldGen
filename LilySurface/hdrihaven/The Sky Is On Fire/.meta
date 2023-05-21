@@ -1,0 +1,73 @@
+{
+    "name": "The Sky Is On Fire",
+    "id": "the_sky_is_on_fire",
+    "scraper": "PolyHavenHdriScraper",
+    "fetchUrl": "https://polyhaven.com/a/the_sky_is_on_fire",
+    "thumbnail": "thumb.png",
+    "variants": [
+        "1k (exr)",
+        "2k (exr)",
+        "4k (exr)",
+        "8k (exr)",
+        "16k (exr)",
+        "1k (hdr)",
+        "2k (hdr)",
+        "4k (hdr)",
+        "8k (hdr)",
+        "16k (hdr)"
+    ],
+    "custom": {
+        "variant_data": [
+            [
+                "1k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/1k/the_sky_is_on_fire_1k.exr"
+            ],
+            [
+                "2k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/2k/the_sky_is_on_fire_2k.exr"
+            ],
+            [
+                "4k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/4k/the_sky_is_on_fire_4k.exr"
+            ],
+            [
+                "8k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/8k/the_sky_is_on_fire_8k.exr"
+            ],
+            [
+                "16k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/16k%2B/the_sky_is_on_fire_16k.exr"
+            ],
+            [
+                "1k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/the_sky_is_on_fire_1k.hdr"
+            ],
+            [
+                "2k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/the_sky_is_on_fire_2k.hdr"
+            ],
+            [
+                "4k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/the_sky_is_on_fire_4k.hdr"
+            ],
+            [
+                "8k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/the_sky_is_on_fire_8k.hdr"
+            ],
+            [
+                "16k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/16k%2B/the_sky_is_on_fire_16k.hdr"
+            ]
+        ]
+    }
+}

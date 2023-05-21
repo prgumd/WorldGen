@@ -19,3 +19,4 @@
  street_textures: {street_texture_url: "https://www.cgbookcase.com/textures/highway-road-cracks-01", street_texture_name: "cgbookcase/Highway Road Cracks 01/1K"}
  building_textures: {building_texture_urls: ["https://ambientcg.com/view?id=Facade018A", "https://ambientcg.com/view?id=Facade001", "https://ambientcg.com/view?id=Facade020A", "https://ambientcg.com/view?id=Facade005", "https://ambientcg.com/view?id=Facade006"]
          , building_texture_names: ["ambientCG/Facade018A/1K-JPG", "ambientCG/Facade001/1K-JPG", "ambientCG/Facade020A/1K-JPG", "ambientCG/Facade005/1K-JPG", "ambientCG/Facade006/1K-JPG"]}
+ roof_objs: ["/Users/riyakumari/blender_project/blender-prm-riya/src/objects/radioDish/radioDish.obj", "/Users/riyakumari/blender_project/blender-prm-riya/src/objects/rooftop/Roof/fan.obj", "/Users/riyakumari/blender_project/blender-prm-riya/src/objects/rooftop/ACWallUnit/AcUnit.obj"]

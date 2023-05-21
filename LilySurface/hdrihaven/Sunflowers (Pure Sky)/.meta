@@ -1,0 +1,73 @@
+{
+    "name": "Sunflowers (Pure Sky)",
+    "id": "sunflowers_puresky",
+    "scraper": "PolyHavenHdriScraper",
+    "fetchUrl": "https://polyhaven.com/a/sunflowers_puresky",
+    "thumbnail": "thumb.png",
+    "variants": [
+        "1k (exr)",
+        "2k (exr)",
+        "4k (exr)",
+        "8k (exr)",
+        "16k (exr)",
+        "1k (hdr)",
+        "2k (hdr)",
+        "4k (hdr)",
+        "8k (hdr)",
+        "16k (hdr)"
+    ],
+    "custom": {
+        "variant_data": [
+            [
+                "1k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/1k/sunflowers_puresky_1k.exr"
+            ],
+            [
+                "2k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/2k/sunflowers_puresky_2k.exr"
+            ],
+            [
+                "4k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/4k/sunflowers_puresky_4k.exr"
+            ],
+            [
+                "8k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/8k/sunflowers_puresky_8k.exr"
+            ],
+            [
+                "16k",
+                "exr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/16k%2B/sunflowers_puresky_16k.exr"
+            ],
+            [
+                "1k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/sunflowers_puresky_1k.hdr"
+            ],
+            [
+                "2k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/sunflowers_puresky_2k.hdr"
+            ],
+            [
+                "4k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/sunflowers_puresky_4k.hdr"
+            ],
+            [
+                "8k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/sunflowers_puresky_8k.hdr"
+            ],
+            [
+                "16k",
+                "hdr",
+                "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/16k%2B/sunflowers_puresky_16k.hdr"
+            ]
+        ]
+    }
+}

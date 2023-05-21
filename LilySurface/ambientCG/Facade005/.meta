@@ -1,0 +1,26 @@
+{
+    "name": "Facade005",
+    "id": "Facade005",
+    "scraper": "AmbientCgScraper",
+    "fetchUrl": "https://ambientcg.com/view?id=Facade005",
+    "thumbnail": "thumb.png",
+    "variants": [
+        "1K-JPG",
+        "2K-JPG",
+        "4K-JPG",
+        "1K-PNG",
+        "2K-PNG",
+        "4K-PNG"
+    ],
+    "custom": {
+        "variants_urls": [
+            "https://cdn3.struffelproductions.com/file/ambientCG/download/Facade005_dzfbwp0m/Facade005_1K-JPG.zip",
+            "https://cdn3.struffelproductions.com/file/ambientCG/download/Facade005_dzfbwp0m/Facade005_2K-JPG.zip",
+            "https://cdn3.struffelproductions.com/file/ambientCG/download/Facade005_dzfbwp0m/Facade005_4K-JPG.zip",
+            "https://cdn3.struffelproductions.com/file/ambientCG/download/Facade005_dzfbwp0m/Facade005_1K-PNG.zip",
+            "https://cdn3.struffelproductions.com/file/ambientCG/download/Facade005_dzfbwp0m/Facade005_2K-PNG.zip",
+            "https://cdn3.struffelproductions.com/file/ambientCG/download/Facade005_dzfbwp0m/Facade005_4K-PNG.zip"
+        ],
+        "thumbnail_url": "https://cdn3.struffelproductions.com/file/ambientCG/media/sphere/512-PNG/Facade005_PREVIEW.png"
+    }
+}
