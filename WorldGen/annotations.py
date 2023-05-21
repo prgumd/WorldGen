@@ -75,11 +75,12 @@ class Annotations :
             self.generateFlow()
 
         bpy.ops.render.render(animation=True, write_still=True)
+
         if 'depth' in arrOfOutputs:
             self.convertDepthToPlasma()
         if 'flow' in arrOfOutputs:
             folder_dir = self.outputFilePath + "/flow/metric/"
-            # self.convertFlowToFlo()
+            self.convertFlowToFlo()
 
         
     def generateDepth(self, renderEngine="CYCLES"):

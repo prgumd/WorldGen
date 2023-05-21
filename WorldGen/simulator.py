@@ -58,8 +58,12 @@ class Simulator:
 
         self.addTextureToRoofs(roof_textures_url=roofTextures["roof_textures_url"], roof_textures_name=roofTextures["roof_textures_name"])
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
-
-        self.addRooftopObjects(roofObjects=roofObjects)
+        
+        main_collection = bpy.context.scene.collection
+        rooftop_objects_collection = bpy.data.collections.new("RooftopObjects")
+        rooftopObjects = self.addRooftopObjects(roofObjects=roofObjects, collection=rooftop_objects_collection)
+        self.moveToCollection(rooftopObjects, rooftop_objects_collection)
+        main_collection.children.link(rooftop_objects_collection)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
 
@@ -67,10 +71,11 @@ class Simulator:
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
        
         # Adding traffic lights
-        main_collection = bpy.context.scene.collection
+        # main_collection = bpy.context.scene.collection
         traffic_lights_collection = bpy.data.collections.new("TrafficLights")
         self.addTrafficLights(street_name='secondary_roads.000', collection=traffic_lights_collection, traffic_light_obj=trafficLightObject)
         main_collection.children.link(traffic_lights_collection)
+        bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         # Addging trees
         tree_collection = bpy.data.collections.new("Trees")
@@ -99,6 +104,15 @@ class Simulator:
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
     
 
+    def moveToCollection(self, rooftopObj, collection):
+        print("in move to colelction")
+        self.deselectObjects()
+        for obj in rooftopObj:
+            print("moving : ", obj)
+            obj.select_set(True)
+            collection.objects.link(obj)
+            obj.users_collection[0].objects.unlink(obj)
+            obj.select_set(False)
         
     def addCamera(self):
         bpy.ops.object.mode_set(mode = 'OBJECT')
@@ -1064,15 +1078,15 @@ class Simulator:
                 traffic_light.rotation_euler[2] = theta1 + 2.40
 
 
-    def addRooftopObjects(self, roofObjects):
+    def addRooftopObjects(self, roofObjects, collection):
         bpy.ops.object.mode_set(mode = 'OBJECT')
         self.deselectObjects()
 
         # select roofs and store in an array
         roofs = []
-        for collection in bpy.data.collections:
-            if "osm_buildings" in collection.name:
-                buildings = collection.name
+        for c in bpy.data.collections:
+            if "osm_buildings" in c.name:
+                buildings = c.name
                 active_obj = bpy.data.objects[buildings]
                 bpy.context.view_layer.objects.active = active_obj
                 myObjs = bpy.context.active_object
@@ -1081,6 +1095,7 @@ class Simulator:
                         roofs.append(o)
 
         self.deselectObjects()
+        all_objs_added = []
 
         # go through each roof and subdivide 
         for roof in roofs:
@@ -1100,45 +1115,56 @@ class Simulator:
             vertices = list(filter(lambda v : len(v.link_edges)>4, vertices))
             rot = 0
 
+            # Deciding number of objects to add
             if len(vertices) > 6:
                 num_of_objects = random.randint(0, int(len(vertices)/2))
             else: num_of_objects == len(vertices)
-
-            all_objs_added = []
+            
             for num in range(num_of_objects):
         
                 i = random.randint(0, len(roofObjects)-1)
                 bpy.ops.import_scene.obj(filepath=roofObjects[i], filter_glob=".fbx;*.mtl", axis_forward='-Z', axis_up='Y')
 
                 obj = bpy.context.selected_objects
-                a = 0 #increment this if a particular vertex location is overlapping with an object
+                it = 0 # increment this if a particular vertex location is overlapping with an object
+                # check for overlap with other roof objects
                 is_overlapping = True
                 skip = False
                 while(is_overlapping):
-                    if a+num >= len(vertices): 
+                    if it+num >= len(vertices): 
                         skip = True 
                         break
-                    v = vertices[num+a]
+                    v = vertices[num+it]
+                    it+=1
+
                     coords = (roof.matrix_world @ v.co)
                     obj[0].location = [coords[0], coords[1], coords[2]]
                     if len(all_objs_added)==0: is_overlapping=False
                     for o in all_objs_added:
-                        if not checkOverlap(o.name, obj[0].name):
+                        if not checkOverlap(o.name, obj[0].name): 
                             is_overlapping = False
-                            a+=1
+                    
                 if skip or is_overlapping:
                     obj[0].select_set(False)
+                    bpy.data.objects.remove(obj[0], do_unlink=True)
                     continue
                 obj[0].rotation_euler = [math.pi/2, 0, rot]
                 obj[0].scale = [0.5, 0.5, 0.5]
 
                 rot = rot + math.pi/4
 
-                obj[0].select_set(False)                   
                 all_objs_added.append(obj[0])
+
+                obj[0].select_set(False)
+                bpy.ops.wm.save_as_mainfile(filepath=self.filepath) 
+
+            
             bpy.ops.object.mode_set(mode = 'OBJECT')
             self.deselectObjects()
 
+        bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+        return all_objs_added
+        
 
     def hide_center_road(self):
         bpy.ops.object.mode_set(mode = 'OBJECT')
