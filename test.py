@@ -25,6 +25,7 @@ with open('config.yaml') as f:
     OUTPUTS = data["outputs"]
     TWO_WAY_STREETS = data["two_way_streets"]
     ONLY_RENDER_ANNOTATIONS = data["only-render-annotations"]
+    IS_SUBURBS = data['is_suburbs']
 
 with open('texturesAndObjectsConfig.yaml') as f:
     data = yaml.load(f, Loader=SafeLoader)
@@ -49,7 +50,7 @@ def main():
 
         # create simulation
         simulation = WorldGen.Simulator(BLEND_FILEPATH, TWO_WAY_STREETS)
-        simulation.createScene(SCENE_COORDS[0], SCENE_COORDS[1], SCENE_COORDS[2], SCENE_COORDS[3], terrainTexture=TERRAIN_TEXTURES, 
+        simulation.createScene(SCENE_COORDS[0], SCENE_COORDS[1], SCENE_COORDS[2], SCENE_COORDS[3], terrainTexture=TERRAIN_TEXTURES, isSuburbs=IS_SUBURBS,
                             roofTextures=ROOF_TEXTURES, treeObjects=TREE_OBJECTS, numOfTrees=NUMBER_OF_TREES, trafficLightObject = TRAFFIC_LIGHT_OBJ, 
                             streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES, roofObjects=ROOF_OBJECTS)
         

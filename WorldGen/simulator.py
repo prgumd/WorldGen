@@ -98,17 +98,27 @@ class Simulator:
 
         self.addTextureToStreets(streetTextures["street_texture_url"], streetTextures["street_texture_name"])
 
-        # self.hide_center_road()
-        # for obj_name in self.object_names:
-        #     create_collection(name)
-        bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
-    
+        self.hide_center_road()
+        self.hide_path()
+        self.extrude_roads()
+        
 
+        bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+
+
+    
+    def extrude_roads(self):
+        self.deselectObjects()
+        roads = [o for o in bpy.data.objects if "roads" in o.name]
+        for road in roads:
+            road.select_set(True)
+            bpy.ops.object.mode_set(mode = 'EDIT')
+            bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, "use_dissolve_ortho_edges":False, "mirror":False}, TRANSFORM_OT_translate={"value":(4.65661e-10, 4.65661e-10, -0.425891), "orient_axis_ortho":'X', "orient_type":'NORMAL', "orient_matrix":((0.999904, -0.000133084, -0.0138799), (1.25411e-06, 0.999955, -0.00949752), (0.0138805, 0.00949659, 0.999859)), "orient_matrix_type":'NORMAL', "constraint_axis":(False, False, True), "mirror":False, "use_proportional_edit":False, "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "use_proportional_connected":False, "use_proportional_projected":False, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "view2d_edge_pan":False, "release_confirm":False, "use_accurate":False, "use_automerge_and_split":False})
+            road.select_set(False)
+            
     def moveToCollection(self, rooftopObj, collection):
-        print("in move to colelction")
         self.deselectObjects()
         for obj in rooftopObj:
-            print("moving : ", obj)
             obj.select_set(True)
             collection.objects.link(obj)
             obj.users_collection[0].objects.unlink(obj)
@@ -1168,6 +1178,22 @@ class Simulator:
 
     def hide_center_road(self):
         bpy.ops.object.mode_set(mode = 'OBJECT')
+        self.deselectObjects()
+        center_road = bpy.data.objects["secondary_roads.000"]
+        center_road.select_set(True)
+        center_road.hide_render = True # hiding this road as two streets will be created from this
+        center_road.hide_viewport = True
+        self.deselectObjects()
+
+    def hide_path(self):
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+        self.deselectObjects()
+        for o in bpy.data.objects:
+            if "osm_paths_footway" in o.name:
+                path = o
+        path.select_set(True)
+        path.hide_render = True # hiding this road as two streets will be created from this
+        path.hide_viewport = True
         self.deselectObjects()
 
         

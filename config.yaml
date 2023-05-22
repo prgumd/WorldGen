@@ -6,7 +6,7 @@
  image-resolution: [1024, 1024, 100] 
  scene-coordinates: [-122.39622,37.79148,-122.38925,37.79431]
  outputs: ["depth", "flow", "semantic_seg", "stereo"]
- is_suburbs: False
+ is_suburbs: True
  two_way_streets: True
  weather:
    - midday
