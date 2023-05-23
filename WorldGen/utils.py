@@ -139,42 +139,32 @@ def checkOverlap(obj1, obj2):
     #if list is empty, no objects are touching
     return inter != []
 
+def pokeStreet(street): 
+     #picking the left street for now
+    street = bpy.data.objects[street]
 
-# def checkOverlap(obj1_name, obj2_name):
-    # obj1_name : string
-    # obj2_name : string
-    # returns boolean - True if both objects overlap
+    # Selecting the edit mode version of the street
+    street.select_set(True)
+    bpy.context.view_layer.objects.active = street
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
 
-    # Get the objects
-    obj1 = bpy.data.objects[obj1_name]
-    obj2 = bpy.data.objects[obj2_name]
+    obj = bpy.context.edit_object # getting the context
+    me = obj.data
+    bm = bmesh.from_edit_mesh(me)
+    faces = [f for f in bm.faces if f.select] # getting all the selected faces
+
+    # poke faces
+    poked = bmesh.ops.poke( bm, faces=faces)
+    bmesh.update_edit_mesh(me)
+
+    obj = bpy.context.object
+    me = obj.data
+    bm = bmesh.from_edit_mesh(me)
+
+    poked = [[vert.co.x, vert.co.y, vert.co.z] for vert in poked["verts"]]
+
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+    deselect_all_objects()
     
-
-    # Get their world matrix
-    mat1 = obj1.matrix_world
-    mat2 = obj2.matrix_world
-
-    # Get the geometry in world coordinates
-    vert1 = [mat1 @ v.co for v in obj1.data.vertices] 
-    poly1 = [p.vertices for p in obj1.data.polygons]
-    print("obj1: ", obj1)
-    print("vert1: ", len(vert1))
-
-
-    vert2 = [mat2 @ v.co for v in obj2.data.vertices] 
-    poly2 = [p.vertices for p in obj2.data.polygons]
-    print("obj2: ", obj2)
-    print("vert2: ", len(vert1))
-
-    # Create the BVH trees
-    bvh1 = BVHTree.FromPolygons( vert1, poly1 )
-    bvh2 = BVHTree.FromPolygons( vert2, poly2 )
-    print("overlap : ", bvh1.overlap(bvh2))
-
-    # Test if overlap
-    
-    if len(bvh1.overlap(bvh2)) > 0:
-        print('insside check overlap : ', bvh1.overlap(bvh2))
-        return True
-    else:
-        return False
+    return poked

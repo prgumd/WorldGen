@@ -7,7 +7,7 @@ import mathutils
 import math
 from .camera import Camera
 from mathutils import geometry
-from .utils import checkOverlap, getListofBuildings
+from .utils import checkOverlap, getListofBuildings, pokeStreet
 from scipy import spatial
 
 
@@ -26,6 +26,8 @@ class Simulator:
         self.isTwoWay = isTwoWay
         self.pokeLeftStreet = False
         self.pokeRightStreet = False
+        self.pokeLeftStreetVerts = []
+        self.pokeRightStreetVerts = []
         self.cameras = []
         self.active_camera = None
         self.object_names = []
@@ -69,6 +71,8 @@ class Simulator:
 
         self.addStreets()
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+
+        
        
         # Adding traffic lights
         # main_collection = bpy.context.scene.collection
@@ -132,47 +136,30 @@ class Simulator:
             # left and right street
             streets = ["secondary_roads.001", "secondary_roads.002"]
 
-            street = streets[0] #picking the left street for now
-            street = bpy.data.objects[street]
-
-            # Selecting the edit mode version of the street
-            street.select_set(True)
-            bpy.context.view_layer.objects.active = street
-            bpy.ops.object.mode_set(mode = 'EDIT')
-            bpy.ops.mesh.select_all(action='SELECT')
-
-            obj = bpy.context.edit_object # getting the context
-            me = obj.data
-            bm = bmesh.from_edit_mesh(me)
-            faces = [f for f in bm.faces if f.select] # getting all the selected faces
-
+            street = bpy.data.objects[streets[0]] #picking the left street for now
+            
             # poke faces
-            if not self.pokeLeftStreet : 
-                poked = bmesh.ops.poke( bm, faces=faces)
-                bmesh.update_edit_mesh(me)
-                # bm = bmesh.from_edit_mesh(me)
-
-                obj = bpy.context.object
-                me = obj.data
-                bm = bmesh.from_edit_mesh(me)
-                self.pokeLeftStreet = True
-            
-            vertices = [v for v in bm.verts]
-            
+            poked = self.pokeLeftStreetVerts
             # ****** Can use these vertices to construct any kind of curve you want *****
 
-            vertices = [vertex for vertex in vertices if len(vertex.link_edges) == 4]
-            bpy.ops.mesh.select_all(action='DESELECT')
-            
-            animation_count = 20
+            poked_tree = spatial.KDTree(poked)
+            start_vertex = poked[random.randint(0, len(poked)-1)]
+
+            distances, indexes = poked_tree.query(start_vertex, k = 2)
             coords = []
-            for i,v in enumerate(vertices):
-                # if i > 20:
-                v.select_set(True)
-                world_coords = street.matrix_world @ v.co
-                coords.append(world_coords)
-                if animation_count + 20 == i:
-                    break
+            count = 0
+            while(count < 20):
+                count+=1
+                for i in indexes:
+                    v = poked[i]
+                    vertex_world_coords = street.matrix_world @ mathutils.Vector((v[0], v[1], v[2]))
+                    if not vertex_world_coords in coords:
+                        coords.append(vertex_world_coords)
+                        start_vertex = vertex_world_coords
+                        break
+                
+                distances, indexes = poked_tree.query(start_vertex, k = 2)
+
             # https://blender.stackexchange.com/questions/6750/poly-bezier-curve-from-a-list-of-coordinates
             # create the Curve Datablock
             curveData = bpy.data.curves.new('cameraCurve', type='CURVE')
@@ -204,7 +191,8 @@ class Simulator:
             bpy.ops.constraint.followpath_path_animate(constraint="Follow Path", owner='OBJECT')
             bpy.context.object.constraints["Follow Path"].use_curve_follow = True
             camera.location = (cam_location.x, cam_location.y, cam_location.z + 5)
-            # camera.rotation = [1.38569, -8.8702e-07, -1.53589]
+            camera.constraints["Follow Path"].forward_axis = 'FORWARD_X'
+
 
             self.deselectObjects()
 
@@ -469,6 +457,14 @@ class Simulator:
             
             bpy.data.objects['secondary_roads.000'].hide_render = True # hiding this road as two streets will be created from this
             bpy.data.objects['secondary_roads.000'].hide_viewport = True
+            
+            streets = ["secondary_roads.001", "secondary_roads.002"]
+        
+            # poke faces
+            self.pokeLeftStreetVerts = pokeStreet(streets[0])
+            self.pokeRightStreetVerts = pokeStreet(streets[1])
+            self.pokeLeftStreet = True
+            self.pokeRightStreet = True
 
     def addTextureToStreets(self, roadTextureUrl, roadTextureName):
         '''
@@ -1138,10 +1134,10 @@ class Simulator:
                 obj = bpy.context.selected_objects
                 it = 0 # increment this if a particular vertex location is overlapping with an object
                 # check for overlap with other roof objects
-                is_overlapping = True
+                flag = True
                 skip = False
-                while(is_overlapping):
-                    if it+num >= len(vertices): 
+                while(flag):
+                    if num + it >= len(vertices): 
                         skip = True 
                         break
                     v = vertices[num+it]
@@ -1149,12 +1145,16 @@ class Simulator:
 
                     coords = (roof.matrix_world @ v.co)
                     obj[0].location = [coords[0], coords[1], coords[2]]
-                    if len(all_objs_added)==0: is_overlapping=False
+                    if len(all_objs_added)==0: flag=False
+                    overlap = False
                     for o in all_objs_added:
-                        if not checkOverlap(o.name, obj[0].name): 
-                            is_overlapping = False
+                        if checkOverlap(o.name, obj[0].name): 
+                            overlap = True
+                    if overlap == False:
+                        break
+                            
                     
-                if skip or is_overlapping:
+                if skip:
                     obj[0].select_set(False)
                     bpy.data.objects.remove(obj[0], do_unlink=True)
                     continue
@@ -1196,7 +1196,10 @@ class Simulator:
         path.hide_viewport = True
         self.deselectObjects()
 
-        
+    
+    def add_cars(self):
+        self.pokeLeftStreetVerts = []
+
 
 
 
