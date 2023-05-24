@@ -2,6 +2,8 @@ import bpy
 import random
 from mathutils.bvhtree import BVHTree
 import bmesh
+from scipy import spatial
+import mathutils
 
 
 def new_plane(location, size, name):
@@ -168,3 +170,42 @@ def pokeStreet(street):
     deselect_all_objects()
     
     return poked
+
+def createCurve(coords, name):
+    curveData = bpy.data.curves.new('curve', type='CURVE')
+    curveData.dimensions = '3D'
+    curveData.resolution_u = 2
+
+    # map coords to spline
+    polyline = curveData.splines.new('NURBS')
+    polyline.points.add(len(coords))
+    for i, coord in enumerate(coords):
+        x = coord.x
+        y = coord.y
+        z = coord.z
+        polyline.points[i].co = (x, y, z, 1)
+
+    # create Object
+    curveOB = bpy.data.objects.new(name, curveData)
+    return curveOB, polyline
+
+def getCoordsForCurve(poked, street):
+    poked_tree = spatial.KDTree(poked)
+    start_vertex = poked[random.randint(0, len(poked)-1)]
+
+    distances, indexes = poked_tree.query(start_vertex, k = 2)
+    coords = []
+    count = 0
+    while(count < 20):
+        count+=1
+        for i in indexes:
+            v = poked[i]
+            vertex_world_coords = street.matrix_world @ mathutils.Vector((v[0], v[1], v[2]))
+            if not vertex_world_coords in coords:
+                coords.append(vertex_world_coords)
+                start_vertex = vertex_world_coords
+                break
+        
+        distances, indexes = poked_tree.query(start_vertex, k = 2)
+
+    return coords

@@ -7,7 +7,7 @@ import mathutils
 import math
 from .camera import Camera
 from mathutils import geometry
-from .utils import checkOverlap, getListofBuildings, pokeStreet
+from .utils import checkOverlap, getListofBuildings, pokeStreet, createCurve, getCoordsForCurve
 from scipy import spatial
 
 
@@ -34,7 +34,8 @@ class Simulator:
         self.pass_indexes = []
 
     def createScene(self, minLong, minLat, maxLong, maxLat, isSuburbs=False, terrainTexture={'material_url': '', "material_name": ''}, 
-                    roofTextures=[], streetTextures={}, treeObjects=[], numOfTrees = 2, benchObjects=[], streetLampObjects=[], trafficLightObject='', buildingTextures={}, roofObjects=[]):
+                    roofTextures=[], streetTextures={}, treeObjects=[], numOfTrees = 2, benchObjects=[], streetLampObjects=[], trafficLightObject='', 
+                    buildingTextures={}, roofObjects=[], carObjs=[], numOfCars=2, numOfBenches=20, numOfStreetLamps=20):
         '''
         Creates scene given latitude and longitude, flat roofs are imported by default
 
@@ -61,11 +62,12 @@ class Simulator:
         self.addTextureToRoofs(roof_textures_url=roofTextures["roof_textures_url"], roof_textures_name=roofTextures["roof_textures_name"])
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
         
-        main_collection = bpy.context.scene.collection
-        rooftop_objects_collection = bpy.data.collections.new("RooftopObjects")
-        rooftopObjects = self.addRooftopObjects(roofObjects=roofObjects, collection=rooftop_objects_collection)
-        self.moveToCollection(rooftopObjects, rooftop_objects_collection)
-        main_collection.children.link(rooftop_objects_collection)
+        mainCollection = bpy.context.scene.collection
+        rooftopObjCollection = bpy.data.collections.new("RooftopObjects")
+        rooftopObjects = self.addRooftopObjects(roofObjects=roofObjects, collection=rooftopObjCollection)
+        if rooftopObjects:
+            self.moveToCollection(rooftopObjects, rooftopObjCollection)
+        mainCollection.children.link(rooftopObjCollection)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
 
@@ -76,28 +78,28 @@ class Simulator:
        
         # Adding traffic lights
         # main_collection = bpy.context.scene.collection
-        traffic_lights_collection = bpy.data.collections.new("TrafficLights")
-        self.addTrafficLights(street_name='secondary_roads.000', collection=traffic_lights_collection, traffic_light_obj=trafficLightObject)
-        main_collection.children.link(traffic_lights_collection)
+        trafficLightCollection = bpy.data.collections.new("TrafficLights")
+        self.addTrafficLights(street_name='secondary_roads.000', collection=trafficLightCollection, traffic_light_obj=trafficLightObject)
+        mainCollection.children.link(trafficLightCollection)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         # Addging trees
-        tree_collection = bpy.data.collections.new("Trees")
-        main_collection.children.link(tree_collection)
-        self.addTrees(treeObjects, tree_collection, numOfTrees=numOfTrees)
+        treeCollection = bpy.data.collections.new("Trees")
+        mainCollection.children.link(treeCollection)
+        self.addTrees(treeObjects, treeCollection, numOfTrees=numOfTrees)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         intersections = self.getIntersections("secondary_roads.000")
         # self.addTrafficLights(collection, traffic_light_obj=trafficLightObject)
         
-        street_lamp_collection = bpy.data.collections.new("StreetLamps")
-        main_collection.children.link(street_lamp_collection)
-        self.addingToSidewalks("street_lamps", streetLampObjects, street_lamp_collection, 2, intersections)
+        streetLampCollection = bpy.data.collections.new("StreetLamps")
+        mainCollection.children.link(streetLampCollection)
+        self.addingToSidewalks("street_lamps", streetLampObjects, streetLampCollection, numOfStreetLamps, intersections)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
-        twin_bench_collection = bpy.data.collections.new("TwinBenches")
-        main_collection.children.link(twin_bench_collection)
-        self.addingToSidewalks("benches", benchObjects, twin_bench_collection, 2, intersections)
+        twinBenchCollection = bpy.data.collections.new("TwinBenches")
+        mainCollection.children.link(twinBenchCollection)
+        self.addingToSidewalks("benches", benchObjects, twinBenchCollection, numOfBenches, intersections)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         self.addTextureToStreets(streetTextures["street_texture_url"], streetTextures["street_texture_name"])
@@ -105,7 +107,10 @@ class Simulator:
         self.hide_center_road()
         self.hide_path()
         self.extrude_roads()
-        
+
+        carCollection = bpy.data.collections.new("Cars")
+        self.add_cars(numOfCars, "secondary_roads.001", carObjs, carCollection)
+        mainCollection.children.link(carCollection)
 
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
@@ -120,13 +125,20 @@ class Simulator:
             bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, "use_dissolve_ortho_edges":False, "mirror":False}, TRANSFORM_OT_translate={"value":(4.65661e-10, 4.65661e-10, -0.425891), "orient_axis_ortho":'X', "orient_type":'NORMAL', "orient_matrix":((0.999904, -0.000133084, -0.0138799), (1.25411e-06, 0.999955, -0.00949752), (0.0138805, 0.00949659, 0.999859)), "orient_matrix_type":'NORMAL', "constraint_axis":(False, False, True), "mirror":False, "use_proportional_edit":False, "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "use_proportional_connected":False, "use_proportional_projected":False, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "view2d_edge_pan":False, "release_confirm":False, "use_accurate":False, "use_automerge_and_split":False})
             road.select_set(False)
             
-    def moveToCollection(self, rooftopObj, collection):
+    def moveToCollection(self, objects, collection):
+        bpy.data.objects[0].select_set(True)
+        # bpy.ops.object.mode_set(mode = 'OBJECT')
         self.deselectObjects()
-        for obj in rooftopObj:
+        for obj in objects:
             obj.select_set(True)
+                # bpy.context.view_layer.objects.active = obj
             collection.objects.link(obj)
             obj.users_collection[0].objects.unlink(obj)
             obj.select_set(False)
+
+        self.deselectObjects()
+        # bpy.ops.object.mode_set(mode = 'OBJECT')
+            
         
     def addCamera(self):
         bpy.ops.object.mode_set(mode = 'OBJECT')
@@ -161,22 +173,9 @@ class Simulator:
                 distances, indexes = poked_tree.query(start_vertex, k = 2)
 
             # https://blender.stackexchange.com/questions/6750/poly-bezier-curve-from-a-list-of-coordinates
-            # create the Curve Datablock
-            curveData = bpy.data.curves.new('cameraCurve', type='CURVE')
-            curveData.dimensions = '3D'
-            curveData.resolution_u = 2
+            # create the curve from coordinates
+            curveOB, polyline = createCurve(coords, "CameraCurve")
 
-            # map coords to spline
-            polyline = curveData.splines.new('NURBS')
-            polyline.points.add(len(coords))
-            for i, coord in enumerate(coords):
-                x = coord.x
-                y = coord.y
-                z = coord.z
-                polyline.points[i].co = (x, y, z, 1)
-
-            # create Object
-            curveOB = bpy.data.objects.new('CameraCurve', curveData)
             bpy.data.scenes[0].collection.objects.link(curveOB)
 
             bpy.ops.object.mode_set(mode = 'OBJECT')
@@ -409,7 +408,7 @@ class Simulator:
         bpy.data.materials[material_name].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 110
         bpy.data.materials[material_name].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 110
 
-    def addStreets(self, ):
+    def addStreets(self):
         '''
         The street itself is actually created in importScene. 
 
@@ -1197,8 +1196,89 @@ class Simulator:
         self.deselectObjects()
 
     
-    def add_cars(self):
-        self.pokeLeftStreetVerts = []
+    def add_cars(self, count, street, carObjList, carCollection):
+        self.deselectObjects()
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+
+        if street == "secondary_roads.001":
+            poked = self.pokeLeftStreetVerts
+        else:
+            poked = self.pokeRightStreetVerts
+
+        all_coords = []
+        carObjs = []
+
+
+        for i in range(count):
+            coords = getCoordsForCurve(poked, bpy.data.objects[street])
+            
+            overlap = True
+            it = 0
+            while(overlap):
+                # Get new lists with rounded values
+                veclist1_rounded = [tuple(vec) for vec in coords]
+                veclist2_rounded = [tuple(vec) for vec in all_coords]
+
+                # Convert to sets and calculate intersection (&)
+                slct_rounded = set(veclist1_rounded) & set(veclist2_rounded)
+
+                # Pick original elements from veclist1:
+                #   - get index of the element from the rounded list
+                #   - get original element from the original list
+                equalelements = [coords[veclist1_rounded.index(el)] for el in slct_rounded]
+                
+                if len(equalelements) == 0:
+                    overlap = False
+                
+                if it == 20:
+                    return
+                it+=1
+
+            all_coords += coords
+
+            # https://blender.stackexchange.com/questions/6750/poly-bezier-curve-from-a-list-of-coordinates
+            # create the curve from coordinates
+            curveName = "CarCurve" + str(i)
+            curveOB, polyline = createCurve(coords, curveName)
+
+            bpy.data.scenes[0].collection.objects.link(curveOB)
+
+            
+            
+
+            # import a car
+            car_path = carObjList[random.randint(0, len(carObjList))-1]
+            bpy.ops.import_scene.obj(filepath=car_path, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl")
+            obj = bpy.context.selected_objects
+            
+            car = obj[0]
+        
+            car.users_collection[0].objects.unlink(car)
+            carCollection.objects.link(car)
+            car.name = "car" + str(i)
+            car_location = polyline.points[len(coords)].co
+            bpy.context.view_layer.objects.active = car
+            car.select_set(True)
+            
+            bpy.ops.object.constraint_add(type='FOLLOW_PATH')
+            bpy.context.object.constraints["Follow Path"].target = bpy.data.objects[curveName]
+            bpy.ops.constraint.followpath_path_animate(constraint="Follow Path", owner='OBJECT')
+            bpy.context.object.constraints["Follow Path"].use_curve_follow = True
+            car.location = (car_location.x, car_location.y, car_location.z + 0.66)
+            car.constraints["Follow Path"].forward_axis = 'FORWARD_Y'
+            car.constraints["Follow Path"].up_axis = 'UP_Z'
+
+            car.rotation_euler[2] = math.pi
+            # bpy.context.view_layer.objects.active = car
+            
+            carObjs.append(car)
+            
+            self.deselectObjects()
+            
+            bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+        
+        return carObjs
+        
 
 
 

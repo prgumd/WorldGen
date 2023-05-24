@@ -39,6 +39,11 @@ with open('texturesAndObjectsConfig.yaml') as f:
     STREET_TEXTURES = data["street_textures"]
     BUILDING_TEXTURES = data["building_textures"]
     ROOF_OBJECTS = data["roof_objs"]
+    CAR_OBJECTS = data["car_objs"]
+    NUM_OF_CARS = data["num_of_cars"]
+    NUM_OF_BENCHES = data["num_of_benches"]
+    NUM_OF_STREET_LAMPS = data["num_of_street_lamps"]
+
     
 def main():
     if not ONLY_RENDER_ANNOTATIONS:
@@ -52,7 +57,8 @@ def main():
         simulation = WorldGen.Simulator(BLEND_FILEPATH, TWO_WAY_STREETS)
         simulation.createScene(SCENE_COORDS[0], SCENE_COORDS[1], SCENE_COORDS[2], SCENE_COORDS[3], terrainTexture=TERRAIN_TEXTURES, isSuburbs=IS_SUBURBS,
                             roofTextures=ROOF_TEXTURES, treeObjects=TREE_OBJECTS, numOfTrees=NUMBER_OF_TREES, trafficLightObject = TRAFFIC_LIGHT_OBJ, 
-                            streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES, roofObjects=ROOF_OBJECTS)
+                            streetLampObjects=[STREET_LIGHT_OBJ], benchObjects=BENCH_OBJS, streetTextures=STREET_TEXTURES, buildingTextures=BUILDING_TEXTURES, 
+                            roofObjects=ROOF_OBJECTS, carObjs=CAR_OBJECTS, numOfCars=2, numOfBenches=20, numOfStreetLamps=20)
         
         camera = simulation.addCamera() # doesn't work correctly yet
     
@@ -68,8 +74,9 @@ def main():
     # # output_folder = "/Users/riyakumari/Desktop/world-gen/renders" #make sure this is the entire file path, not relative
     if ONLY_RENDER_ANNOTATIONS:
         camera = None
-    annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
-    annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
+    if not len(OUTPUTS) == 0:
+        annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
+        annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
    
     

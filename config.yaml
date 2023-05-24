@@ -5,8 +5,8 @@
  render-engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
  image-resolution: [1024, 1024, 100] 
  scene-coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- outputs: ["depth", "flow", "semantic_seg", "stereo"]
- is_suburbs: True
+ outputs: []
+ is_suburbs: False
  two_way_streets: True
  weather:
    - midday
