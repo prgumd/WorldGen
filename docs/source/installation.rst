@@ -10,11 +10,18 @@ Installation Guide
 
 Linux
 =====
+
+1. Download and extract Blender.
 .. code-block:: bash
-    mkdir -p WorldGenBase/blender
-    wget https://www.blender.org/download/release/Blender3.5/blender-3.5.1-linux-x64.tar.xz/
+    mkdir -p $HOME/WorldGenBase/blender
+    cd $HOME/WorldGenBase/blender
+    wget https://mirrors.ocf.berkeley.edu/blender/release/Blender3.3/blender-3.3.7-linux-x64.tar.xz
+    tar -xf blender-3.5.1-linux-x64.tar.xz
 
-
+2. Create Blender alias and install pip for Blender Python
+.. code-block:: bash
+    alias blender='$HOME/WorldGenBase/blender/blender-3.5.1-linux-x64/./blender'
+    cd blender-3.5.1-linux-x64/
 
 
 Blender add-ons
