@@ -10,10 +10,10 @@ Installation Guide
 
 Linux
 =====
-```
-mkdir -p WorldGenBase/blender
-wget https://www.blender.org/download/release/Blender3.5/blender-3.5.1-linux-x64.tar.xz/
-```
+.. code-block:: bash
+    mkdir -p WorldGenBase/blender
+    wget https://www.blender.org/download/release/Blender3.5/blender-3.5.1-linux-x64.tar.xz/
+
 
 
 
