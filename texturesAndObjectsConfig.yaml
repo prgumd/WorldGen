@@ -15,13 +15,13 @@
  num_of_trees: 2
  bench_objs: ['./assets/Bench/twinBenches.obj']
  street_lamp_obj: './assets/StreetLamps/twoStreetLights2.obj'
- traffic_light_obj: '/Users/riyakumari/blender_project/blender-prm-riya/src/objects/trafficLight/trafficLight.obj'
+ traffic_light_obj: '/Users/riyakumari/WorldGen/assets/trafficLights/trafficLight.obj'
  street_textures: {street_texture_url: "https://www.cgbookcase.com/textures/highway-road-cracks-01", street_texture_name: "cgbookcase/Highway Road Cracks 01/1K"}
  building_textures: {building_texture_urls: ["https://ambientcg.com/view?id=Facade018A", "https://ambientcg.com/view?id=Facade001", "https://ambientcg.com/view?id=Facade020A", "https://ambientcg.com/view?id=Facade005", "https://ambientcg.com/view?id=Facade006"]
          , building_texture_names: ["ambientCG/Facade018A/1K-JPG", "ambientCG/Facade001/1K-JPG", "ambientCG/Facade020A/1K-JPG", "ambientCG/Facade005/1K-JPG", "ambientCG/Facade006/1K-JPG"]}
  building_scale: 15
- roof_objs: ["/Users/riyakumari/blender_project/blender-prm-riya/src/objects/radioDish/radioDish.obj", "/Users/riyakumari/blender_project/blender-prm-riya/src/objects/rooftop/ACWallUnit/AcUnit.obj"]
- car_objs: ["/Users/riyakumari/WorldGen/assets/car/car.obj"]
+ roof_objs: ["./assets/radioDish/radioDish.obj", "./assets/ACWallUnit/AcUnit.obj"]
+ car_objs: ["./assets/car/car.obj"]
  num_of_cars: 20
  num_of_benches: 40
  num_of_street_lamps: 40
