@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'WorldGen'
+copyright = '2023, PRG'
+author = 'Perception and Robotics Group'
 
 release = '0.1'
 version = '0.1.0'
