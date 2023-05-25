@@ -2,12 +2,13 @@ import sys
 import bpy
 
 
-sys.path.append(
-    '/opt/homebrew/Caskroom/miniforge/base/lib/python3.9/site-packages')
-sys.path.append('/opt/homebrew/bin/')
+# sys.path.append(
+#     '/opt/homebrew/Caskroom/miniforge/base/lib/python3.9/site-packages')
+# sys.path.append('/opt/homebrew/bin/')
 sys.path.append("./settings")
 # sys.path.insert(1, '/path/to/application/app/folder')
 sys.path.append("./")
+
 import yaml
 from yaml.loader import SafeLoader
 
@@ -15,17 +16,20 @@ from WorldGen import WorldGen
 
 with open('config.yaml') as f:
     data = yaml.load(f, Loader=SafeLoader)
-    RENDER_DIR = data["render-dir"]
-    BLEND_FILEPATH = data["blend-filepath"]
-    RENDER_ENGINE = data["render-engine"]
-    SCENE_COORDS = data["scene-coordinates"]
-    CLASS_NAMES = data["class-names"]
+    RENDER_DIR = data["render_dir"]
+    BLEND_FILEPATH = data["blend_filepath"]
+    RENDER_ENGINE = data["render_engine"]
+    SCENE_COORDS = data["scene_coordinates"]
+    CLASS_NAMES = data["class_names"]
     WEATHER = data["weather"]
-    IMAGE_RESOLUTION = data["image-resolution"]
+    IMAGE_RESOLUTION = data["image_resolution"]
     OUTPUTS = data["outputs"]
     TWO_WAY_STREETS = data["two_way_streets"]
-    ONLY_RENDER_ANNOTATIONS = data["only-render-annotations"]
-    IS_SUBURBS = data['is_suburbs']
+    ONLY_RENDER_ANNOTATIONS = data["only_render_annotations"]
+    IS_SUBURBS = data["is_suburbs"]
+    SYSTEM_PATH = data["system_path"]
+
+sys.path.append(SYSTEM_PATH)
 
 with open('texturesAndObjectsConfig.yaml') as f:
     data = yaml.load(f, Loader=SafeLoader)

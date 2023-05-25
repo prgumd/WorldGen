@@ -1,14 +1,15 @@
 ---
- render-dir: "/Users/riyakumari/WorldGen/render/" # required
- blend-filepath: "/Users/riyakumari/WorldGen/test.blend" # required
- only-render-annotations: False
- render-engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
- image-resolution: [1024, 1024, 100] 
- scene-coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- outputs: []
+ system_path: "/home/chahatdeep/.local/lib/python3.8/site-packages"
+ render_dir: "/home/chahatdeep/git_cloned/blender-script/generated_scenes/render/" # required
+ blend_filepath: "/home/chahatdeep/git_cloned/blender-script/generated_scenes/Set1.blend" # required
+ only_render_annotations: True
+ render_engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
+ image_resolution: [1024, 1024, 100] 
+ scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
+ outputs: ["stereo"]
  is_suburbs: False
  two_way_streets: True
  weather:
    - midday
    - noFog  
- class-names: ["Trees", "StreetLamps", "TwinBenches", "buildings", "roads", "Terrain", "buildings"]
+ class_names: ["Trees", "StreetLamps", "TwinBenches", "buildings", "roads", "Terrain", "buildings"]
