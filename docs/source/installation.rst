@@ -23,7 +23,7 @@ Linux
 2. Create Blender alias and install pip for Blender Python
 
 .. code-block:: bash
-    
+
     alias blender='$HOME/WorldGenBase/blender/blender-3.5.1-linux-x64/./blender'
     cd blender-3.5.1-linux-x64/
 
@@ -34,7 +34,7 @@ Blender add-ons
 
 Install the following add-ons:
 
-* Lily Surface Scraper <https://github.com/eliemichel/LilySurfaceScraper/> 
-* tinyCAD <https://docs.blender.org/manual/en/latest/addons/mesh/tinycad.html/> 
-* blender-osm <https://prochitecture.gumroad.com/l/blender-osm/>_ 
+* [Lily Surface Scraper] (<)https://github.com/eliemichel/LilySurfaceScraper/)
+* [tinyCAD] (https://docs.blender.org/manual/en/latest/addons/mesh/tinycad.html/)
+* [blender-osm](https://prochitecture.gumroad.com/l/blender-osm/)
 
