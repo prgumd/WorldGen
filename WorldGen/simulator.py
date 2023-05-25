@@ -35,7 +35,7 @@ class Simulator:
 
     def createScene(self, minLong, minLat, maxLong, maxLat, isSuburbs=False, terrainTexture={'material_url': '', "material_name": ''}, 
                     roofTextures=[], streetTextures={}, treeObjects=[], numOfTrees = 2, benchObjects=[], streetLampObjects=[], trafficLightObject='', 
-                    buildingTextures={}, roofObjects=[], carObjs=[], numOfCars=2, numOfBenches=20, numOfStreetLamps=20):
+                    buildingTextures={}, roofObjects=[], carObjs=[], numOfCars=2, numOfBenches=20, numOfStreetLamps=20, buildingScale = 15, maxNumRoofObj = 3, roofObjScale=1.0):
         '''
         Creates scene given latitude and longitude, flat roofs are imported by default
 
@@ -52,8 +52,9 @@ class Simulator:
         
         self.separateRoofs()
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+        
 
-        self.addTextureToBuildings(buildingTextures["building_texture_urls"], buildingTextures["building_texture_names"])
+        self.addTextureToBuildings(buildingTextures["building_texture_urls"], buildingTextures["building_texture_names"], buildingScale)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
         
         self.addTextureToTerrain(terrainTexture["material_url"], terrainTexture["material_name"])
@@ -64,7 +65,7 @@ class Simulator:
         
         mainCollection = bpy.context.scene.collection
         rooftopObjCollection = bpy.data.collections.new("RooftopObjects")
-        rooftopObjects = self.addRooftopObjects(roofObjects=roofObjects, collection=rooftopObjCollection)
+        rooftopObjects = self.addRooftopObjects(roofObjects=roofObjects, collection=rooftopObjCollection, maxNumOfObjects=maxNumRoofObj, roofObjScale=roofObjScale)
         if rooftopObjects:
             self.moveToCollection(rooftopObjects, rooftopObjCollection)
         mainCollection.children.link(rooftopObjCollection)
@@ -101,12 +102,16 @@ class Simulator:
         mainCollection.children.link(twinBenchCollection)
         self.addingToSidewalks("benches", benchObjects, twinBenchCollection, numOfBenches, intersections)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
-
+        
+        return
+    
         self.addTextureToStreets(streetTextures["street_texture_url"], streetTextures["street_texture_name"])
 
         self.hide_center_road()
         self.hide_path()
         self.extrude_roads()
+
+        bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
 
         carCollection = bpy.data.collections.new("Cars")
         self.add_cars(numOfCars, "secondary_roads.001", carObjs, carCollection)
@@ -124,6 +129,8 @@ class Simulator:
             bpy.ops.object.mode_set(mode = 'EDIT')
             bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, "use_dissolve_ortho_edges":False, "mirror":False}, TRANSFORM_OT_translate={"value":(4.65661e-10, 4.65661e-10, -0.425891), "orient_axis_ortho":'X', "orient_type":'NORMAL', "orient_matrix":((0.999904, -0.000133084, -0.0138799), (1.25411e-06, 0.999955, -0.00949752), (0.0138805, 0.00949659, 0.999859)), "orient_matrix_type":'NORMAL', "constraint_axis":(False, False, True), "mirror":False, "use_proportional_edit":False, "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "use_proportional_connected":False, "use_proportional_projected":False, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "view2d_edge_pan":False, "release_confirm":False, "use_accurate":False, "use_automerge_and_split":False})
             road.select_set(False)
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+
             
     def moveToCollection(self, objects, collection):
         bpy.data.objects[0].select_set(True)
@@ -208,6 +215,7 @@ class Simulator:
         bpy.context.scene.blosm.minLat = minLat
         bpy.context.scene.blosm.minLon = minLong
         bpy.context.scene.blosm.maxLon = maxLong
+
         
         # Import the terrain and building models 
         bpy.context.scene.blosm.dataType = 'terrain'
@@ -248,6 +256,7 @@ class Simulator:
 
         # Selects all the buildings under osm_buildings
         buildings = None
+        list_of_buildings = None
         for collection in bpy.data.collections:
             if "osm_buildings" in collection.name:
                 bpy.context.view_layer.objects.active = bpy.data.objects[collection.name]
@@ -255,6 +264,8 @@ class Simulator:
                 myObj.children[0].select_set(True)
                 bpy.ops.object.select_grouped(type='CHILDREN_RECURSIVE')
                 bpy.context.view_layer.objects.active = myObj.children[0]
+                list_of_buildings = [o.name for o in myObj.children]
+                print(list_of_buildings)
                 buildings = collection.name
 
         # Separating roof from walls in edit mode
@@ -275,9 +286,10 @@ class Simulator:
         bpy.context.view_layer.objects.active = active_obj
         myObjs = bpy.context.active_object
         for o in myObjs.children:
-            if "001" in o.name:
+            if "001" in o.name or o.name not in list_of_buildings:
                 o.select_set(True)
-                o.name = o.name.replace("001", "roof")
+                # o.name = o.name.replace("001", "roof")
+                o.name += "roof"
 
         bpy.ops.transform.translate(value=(-0, -0, -0.48044), orient_axis_ortho='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, False, True), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
 
@@ -315,7 +327,7 @@ class Simulator:
             chunk.append(lst[i:i + n])
         return chunk
 
-    def addTextureToBuildings(self, list_of_building_urls, list_of_building_materials):
+    def addTextureToBuildings(self, list_of_building_urls, list_of_building_materials, building_scale):
         
         self.deselectObjects()
 
@@ -374,8 +386,8 @@ class Simulator:
                 mat2 = mat.name.split('.')
             
                 if material in mat2:
-                    bpy.data.materials[mat.name].node_tree.nodes["Mapping"].inputs[3].default_value[0] = 15
-                    bpy.data.materials[mat.name].node_tree.nodes["Mapping"].inputs[3].default_value[1] = 15
+                    bpy.data.materials[mat.name].node_tree.nodes["Mapping"].inputs[3].default_value[0] = building_scale
+                    bpy.data.materials[mat.name].node_tree.nodes["Mapping"].inputs[3].default_value[1] = building_scale
                     bpy.ops.object.mode_set(mode = 'OBJECT')
             
             self.deselectObjects()
@@ -592,7 +604,8 @@ class Simulator:
 
                 pos = coords
                 obj = bpy.context.selected_objects
-
+                if len(obj) == 0:
+                    continue
                 randNum = random.randint(1,3)
                 if randNum == 1:
                     obj[0].scale = [0.5, 0.5, 0.5]
@@ -875,8 +888,7 @@ class Simulator:
         object.hide_render = visibility_render
         
         self.deselectObjects()
-        
-        
+             
     def addTextureToRoofs(self, roof_textures_url, roof_textures_name):
         '''
         Adds texture to the roofs. Using textures from https://ambientcg.com/
@@ -905,7 +917,7 @@ class Simulator:
         
         # shuffle the list of buildings
         random.shuffle(list_of_roofs)
-        grouped_roofs = self.chunks(list_of_roofs, round(len(list_of_roofs)/len(roof_textures_name)))
+        grouped_roofs = self.chunks(list_of_roofs, math.floor(len(list_of_roofs)/len(roof_textures_name)))
 
         
         for idx, group in enumerate(grouped_roofs):
@@ -923,6 +935,7 @@ class Simulator:
                 # if len(bpy.context.object.material_slots) == 0:
                 #     continue
                 # bpy.context.object.active_material = bpy.data.materials['roof']
+                idx = idx%len(roof_textures_name)
                 material_url = roof_textures_url[idx]
                 material = roof_textures_name[idx]
                 # bpy.ops.material.new()
@@ -943,6 +956,7 @@ class Simulator:
             
                 bpy.data.objects[roof].select_set(False)
             self.deselectObjects()
+        self.deselectObjects()
 
     
     def addTrafficLights(self, street_name, collection, traffic_light_obj):
@@ -1035,6 +1049,8 @@ class Simulator:
 
 
                     obj = bpy.context.selected_objects
+                    if len(obj) == 0:
+                        continue
                     obj[0].location = [coords.x, coords.y, coords.z ]
                     obj[0].scale = [0.6, 0.6, 0.6]
                     obj[0].rotation_euler = [math.pi/2, 0, -math.pi*1.2]
@@ -1083,7 +1099,7 @@ class Simulator:
                 traffic_light.rotation_euler[2] = theta1 + 2.40
 
 
-    def addRooftopObjects(self, roofObjects, collection):
+    def addRooftopObjects(self, roofObjects, collection, maxNumOfObjects, roofObjScale):
         bpy.ops.object.mode_set(mode = 'OBJECT')
         self.deselectObjects()
 
@@ -1121,7 +1137,7 @@ class Simulator:
             rot = 0
 
             # Deciding number of objects to add
-            if len(vertices) > 6:
+            if len(vertices) > maxNumOfObjects:
                 num_of_objects = random.randint(0, int(len(vertices)/2))
             else: num_of_objects == len(vertices)
             
@@ -1158,7 +1174,7 @@ class Simulator:
                     bpy.data.objects.remove(obj[0], do_unlink=True)
                     continue
                 obj[0].rotation_euler = [math.pi/2, 0, rot]
-                obj[0].scale = [0.5, 0.5, 0.5]
+                obj[0].scale = [roofObjScale, roofObjScale, roofObjScale]
 
                 rot = rot + math.pi/4
 
@@ -1194,6 +1210,7 @@ class Simulator:
         path.hide_render = True # hiding this road as two streets will be created from this
         path.hide_viewport = True
         self.deselectObjects()
+        
 
     
     def add_cars(self, count, street, carObjList, carCollection):
@@ -1250,14 +1267,15 @@ class Simulator:
             car_path = carObjList[random.randint(0, len(carObjList))-1]
             bpy.ops.import_scene.obj(filepath=car_path, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl")
             obj = bpy.context.selected_objects
-            
+            if len(obj) == 0:
+                continue
             car = obj[0]
         
-            car.users_collection[0].objects.unlink(car)
-            carCollection.objects.link(car)
+            # car.users_collection[0].objects.unlink(car)
+            # carCollection.objects.link(car)
             car.name = "car" + str(i)
             car_location = polyline.points[len(coords)].co
-            bpy.context.view_layer.objects.active = car
+            # bpy.context.view_layer.objects.active = car
             car.select_set(True)
             
             bpy.ops.object.constraint_add(type='FOLLOW_PATH')

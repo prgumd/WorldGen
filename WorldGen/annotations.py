@@ -7,14 +7,6 @@ import bpy
 import array
 import platform
 
-# sys.path.append(
-#     '/opt/homebrew/Caskroom/miniforge/base/lib/python3.11/site-packages')
-# sys.path.append('/opt/homebrew/bin/')
-sys.path.append('/opt/homebrew/lib/python3.11/site-packages/')
-# import '/opt/homebrew/lib/python3.11/site-packages/OpenEXR.cpython-311-darwin.so'
-import Imath
-# import OpenEXR
-
 import cv2
 import glob
 import matplotlib.pyplot as plt

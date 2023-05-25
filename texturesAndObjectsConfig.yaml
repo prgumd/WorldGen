@@ -1,6 +1,6 @@
 ---
- roof: {roof_textures_url: ["https://ambientcg.com/view?id=Concrete017", "https://ambientcg.com/view?id=Concrete036", "https://ambientcg.com/view?id=Concrete019"],
-        roof_textures_name: ["ambientCG/Concrete017/1K-JPG", "ambientCG/Concrete036/1K-JPG", "ambientCG/Concrete019/1K-JPG"]
+ roof: {roof_textures_url: ["https://ambientcg.com/view?id=Concrete017", "https://ambientcg.com/view?id=Concrete042A", "https://ambientcg.com/view?id=Concrete019"],
+        roof_textures_name: ["ambientCG/Concrete017/1K-JPG", "ambientCG/Concrete042/1K-JPG", "ambientCG/Concrete019/1K-JPG"]
         }
  street: 
 
@@ -19,8 +19,11 @@
  street_textures: {street_texture_url: "https://www.cgbookcase.com/textures/highway-road-cracks-01", street_texture_name: "cgbookcase/Highway Road Cracks 01/1K"}
  building_textures: {building_texture_urls: ["https://ambientcg.com/view?id=Facade018A", "https://ambientcg.com/view?id=Facade001", "https://ambientcg.com/view?id=Facade020A", "https://ambientcg.com/view?id=Facade005", "https://ambientcg.com/view?id=Facade006"]
          , building_texture_names: ["ambientCG/Facade018A/1K-JPG", "ambientCG/Facade001/1K-JPG", "ambientCG/Facade020A/1K-JPG", "ambientCG/Facade005/1K-JPG", "ambientCG/Facade006/1K-JPG"]}
- roof_objs: ["/Users/riyakumari/blender_project/blender-prm-riya/src/objects/radioDish/radioDish.obj", "/Users/riyakumari/blender_project/blender-prm-riya/src/objects/rooftop/Roof/fan.obj", "/Users/riyakumari/blender_project/blender-prm-riya/src/objects/rooftop/ACWallUnit/AcUnit.obj"]
+ building_scale: 15
+ roof_objs: ["/Users/riyakumari/blender_project/blender-prm-riya/src/objects/radioDish/radioDish.obj", "/Users/riyakumari/blender_project/blender-prm-riya/src/objects/rooftop/ACWallUnit/AcUnit.obj"]
  car_objs: ["/Users/riyakumari/WorldGen/assets/car/car.obj"]
  num_of_cars: 20
- num_of_benches: 20
- num_of_street_lamps: 20
+ num_of_benches: 40
+ num_of_street_lamps: 40
+ max_number_of_roof_obj: 2
+ roof_obj_scale: 0.3
