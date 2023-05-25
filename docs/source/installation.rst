@@ -43,7 +43,13 @@ Linux
     wget https://bootstrap.pypa.io/get-pip.py
     ./python3.10 get-pip.py
 
-5. Install `pip` packages in blender-python
+5. Install Dependencies
+
+.. code-block:: bash
+    
+    sudo apt-get install openexr, libopenexr-dev, zlib1g-dev
+
+6. Install `pip` packages in blender-python
 
 .. code-block:: bash
     
@@ -51,11 +57,9 @@ Linux
     ./pip install numpy scipy opencv-python matplotlib mathutils setuptools==65.2.0 imath openexr
     
 
-6. Dependencies:
+.. note::
 
-sudo apt-get install openexr,
-sudo apt-get install libopenexr-dev
-sudo apt-get install zlib1g-dev
+
 
 
 
