@@ -34,7 +34,7 @@ Blender add-ons
 
 Install the following add-ons:
 
-* [Lily Surface Scraper] (https://github.com/eliemichel/LilySurfaceScraper/)
+* [Lily Surface Scraper <https://github.com/eliemichel/LilySurfaceScraper/>
 * [tinyCAD] (https://docs.blender.org/manual/en/latest/addons/mesh/tinycad.html/)
 * [blender-osm](https://prochitecture.gumroad.com/l/blender-osm/)
 
