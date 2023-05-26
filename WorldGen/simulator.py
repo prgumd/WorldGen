@@ -1176,6 +1176,7 @@ class Simulator:
                     continue
                 obj[0].rotation_euler = [math.pi/2, 0, rot]
                 obj[0].scale = [roofObjScale, roofObjScale, roofObjScale]
+                obj[0].name = "roofObj" + str(num)
 
                 rot = rot + math.pi/4
 
@@ -1292,5 +1293,19 @@ class Simulator:
             self.deselectObjects()
             
             bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
+
+        # prev_active_obj = bpy.context.view_layer.objects.active 
+        # for car in carObjs: 
+        #     car.select_set(True)
+        #     bpy.context.view_layer.objects.active = car
+        #     car.users_collection[0].objects.unlink(car)
+        #     carCollection.objects.link(car)
+        #     car.select_set(False)
+        # bpy.context.view_layer.objects.active = prev_active_obj
+        
+
+
+        self.deselectObjects()
+
         
         return carObjs

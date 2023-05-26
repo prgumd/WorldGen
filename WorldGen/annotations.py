@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from .camera import Camera
 from .utils import select_objects, deselect_all_objects, get_obj_with_name, assign_pass_indexes
+import matplotlib.colors as mcolors
+from matplotlib import colors
 
 # depth, stereo, semantic seg
 class Annotations : 
@@ -163,16 +165,25 @@ class Annotations :
     def generateSemanticSeg(self, classNames):
         deselect_all_objects()
 
-        colorRampColors = [
-            ('pink', (0.55, 0.15, 0.347,1)),
-            ('dark_pink', (.28,.25,.21,1)),
-            ('green', (0.019, 0.5, 0.038, 1)),
-            ('brown', (0.02, 0, 0.01, 1)),
-            ('very_light_brown', (0.88, 0.61, 0.22, 1)),
-            ('very_light_yellow', (0.55, 0.55, 0.23, 1)),
-            ('very_light_yellow', (0.08, 0, 0.05, 1)),
-        ]
+        # colorRampColors = [
+        #     ('pink', (0.55, 0.15, 0.347,1)),
+        #     ('dark_pink', (.28,.25,.21,1)),
+        #     ('green', (0.019, 0.5, 0.038, 1)),
+        #     ('brown', (0.02, 0, 0.01, 1)),
+        #     ('very_light_brown', (0.88, 0.61, 0.22, 1)),
+        #     ('very_light_yellow', (0.55, 0.55, 0.23, 1)),
+        #     ('very_light_yellow', (0.08, 0, 0.05, 1)),
+        # ]
 
+        palette = np.arange(0, 255, dtype=np.uint8).reshape(1, 255, 1)
+        palette = cv2.applyColorMap(palette, cv2.COLORMAP_JET).squeeze(0)
+        np.random.shuffle(palette)
+
+        list_of_colors = []
+        for i in range(len(classNames)):
+            rand_color = random.choice(list(mcolors.CSS4_COLORS.keys()))
+            rand_color = colors.to_rgba(rand_color)
+            list_of_colors.append(rand_color)
         # Merge classes
         # for name in classNames:
         #     collection = bpy.data.collections[name]
@@ -194,7 +205,7 @@ class Annotations :
         
         for i in range(len(classNames)):
             colorRamp.color_ramp.elements.new(i/len(classNames))
-            colorRamp.color_ramp.elements[i].color = colorRampColors[i][1]
+            colorRamp.color_ramp.elements[i].color = list_of_colors[i]
 
         fileOutput = self.tree.nodes.new(type="CompositorNodeOutputFile")
         fileOutput.file_slots.clear()

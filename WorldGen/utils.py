@@ -67,8 +67,42 @@ def create_collection(collection_name):
                 
                 col.objects.unlink(obj)
 
+def assign_pass_indexes_by_name(classNames):
+    pass_index = 0
+    is_collection_name = False
+    for className in classNames:
 
-def assign_pass_indexes(classNames):
+         
+
+        # # pick a random pass index to assign to this class
+        # num = random.randint(0,100)
+        # while(num in pass_indexes):
+        #     num = random.randint(0,100)
+
+        for collection in bpy.data.collections:
+            # if collection of objects then assign same pass index to all
+            if collection.name == className:
+                is_collection_name = True
+                for obj in collection.all_objects:
+                    obj.pass_index = pass_index
+                break
+        
+        if is_collection_name == False:
+            # if its not a collection name, then look for objects with this name
+            # for obj in bpy.data.objects:
+            #     if className in obj.name:
+            #         obj.pass_index = pass_index
+            for o in bpy.data.objects:
+                if className in o.name:
+                    for c in o.children:
+                        c.pass_index = pass_index
+
+                    o.pass_index = pass_index
+        
+        is_collection_name = False # reset for next iteration
+        pass_index = pass_index + 1
+
+def assign_pass_indexes_by_collection_name(classNames):
     pass_index = 0
     is_collection_name = False
     for className in classNames:
