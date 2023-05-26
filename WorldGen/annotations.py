@@ -1,6 +1,7 @@
 import os
 import array
 # import OpenEXR
+os.environ["OPENCV_IO_ENABLE_OPENEXR"]="1"
 import sys
 import random
 import logging
@@ -226,7 +227,6 @@ class Annotations :
         i = 0
         for filename in os.listdir(dir):
             img = self.get_exr_rgb(dir+filename)
-            print("savedir + viz : ", save_dir)
             if not os.path.isdir(save_dir):
                 os.mkdir(save_dir)
                 

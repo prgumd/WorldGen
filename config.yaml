@@ -5,9 +5,9 @@
  only_render_annotations: True
  render_engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
  image_resolution: [1024, 1024, 100] 
- animation_frame_end: 2
  scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- outputs: ["flow"]
+ animation_frame_end: 20
+ outputs: ["depth", "stereo"]
  is_suburbs: False
  two_way_streets: True
  weather:
