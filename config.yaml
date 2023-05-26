@@ -7,7 +7,7 @@
  image_resolution: [1024, 1024, 100] 
  scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
  animation_frame_end: 20
- outputs: ["depth", "stereo"]
+ outputs: ["image"]
  is_suburbs: False
  two_way_streets: True
  weather:

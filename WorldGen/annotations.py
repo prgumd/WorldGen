@@ -57,6 +57,9 @@ class Annotations :
        
         self.rl = self.tree.nodes.new('CompositorNodeRLayers')
         
+        if 'image' in arrOfOutputs:
+            self.generateImage()
+
         if 'depth' in arrOfOutputs:
             self.generateDepth()
                  
@@ -78,7 +81,19 @@ class Annotations :
         if 'flow' in arrOfOutputs:
             folder_dir = self.outputFilePath + "/flow/exr/"
             self.convertFlowToFlo(folder_dir=folder_dir)
+
+    def generateImage(self):
+        links = self.tree.links
         
+
+        fileOutput = self.tree.nodes.new(type="CompositorNodeOutputFile")
+        fileOutput.file_slots.clear()
+        fileOutput.layer_slots.new("image")
+        fileOutput.format.file_format = "PNG"
+        print("self.rl.outputs: ", self.rl.outputs[0])
+        links.new(self.rl.outputs["Image"], fileOutput.inputs["image"])
+        fileOutput.base_path = self.outputFilePath + "/image/"
+
     def generateDepth(self, renderEngine="CYCLES"):
         """ 
         Generates depth for selected camera
