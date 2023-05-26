@@ -1,15 +1,16 @@
 ---
  python_system_path: "/home/chahatdeep/.local/lib/python3.8/site-packages"
- render_dir: "/render" # required
- blend_filepath: "/home/chahatdeep/git_cloned/worldgen-dev/WorldGen/test_weather.blend" # required
- only_render_annotations: False
+ render_dir: "render" # required
+ blend_filepath: "/home/chahatdeep/git_cloned/worldgen-dev/WorldGen/test_annotations.blend" # required
+ only_render_annotations: True
  render_engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
  image_resolution: [1024, 1024, 100] 
+ animation_frame_end: 2
  scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- outputs: []
+ outputs: ["flow"]
  is_suburbs: False
  two_way_streets: True
  weather:
    - midday
-   - rain  
+   - clear  
  class_names: ["Trees", "StreetLamps", "TwinBenches", "buildings", "roads", "Terrain", "buildings"]

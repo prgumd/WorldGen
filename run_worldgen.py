@@ -25,6 +25,7 @@ with open('config.yaml') as f:
     ONLY_RENDER_ANNOTATIONS = data["only_render_annotations"]
     IS_SUBURBS = data['is_suburbs']
     SYSTEM_PATH = data["python_system_path"]
+    ANIMATION_FRAME_END = data["animation_frame_end"]
 
 sys.path.append(SYSTEM_PATH)
     
@@ -70,8 +71,8 @@ def main():
         camera = simulation.addCamera() # doesn't work correctly yet
     
 
-    # add hdri
-    simulation.addWeather(SKY_HDRI,WEATHER[0], WEATHER[1])
+        # add hdri
+        simulation.addWeather(SKY_HDRI,WEATHER[0], WEATHER[1])
 
 
     # add different lens to camera...
@@ -83,7 +84,7 @@ def main():
         camera = None
     if not len(OUTPUTS) == 0:
         annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
-        annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
+        annotations.generateOutputs(OUTPUTS, CLASS_NAMES, ANIMATION_FRAME_END)
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
    
     

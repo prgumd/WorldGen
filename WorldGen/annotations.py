@@ -1,5 +1,6 @@
 import os
-os.environ["OPENCV_IO_ENABLE_OPENEXR"]="1"
+import array
+# import OpenEXR
 import sys
 import random
 import logging
@@ -32,20 +33,21 @@ class Annotations :
 
         view_layer_name = "ViewLayer"
 
-        if platform.system() == "Linux":
-            view_layer_name = "View Layer"
         
         bpy.context.scene.view_layers[view_layer_name].use_pass_z = True
         bpy.context.view_layer.cycles.denoising_store_passes = True
         bpy.context.scene.view_layers[view_layer_name].use_pass_normal = True
+        bpy.context.scene.view_layers[view_layer_name].use_pass_vector = True
         bpy.context.scene.view_layers[view_layer_name].use_pass_object_index = True
 
-    def generateOutputs(self, arrOfOutputs, classNames):
+    def generateOutputs(self, arrOfOutputs, classNames, animFrameEnd=20):
         # arrOfOutputs (string[])
         # classNames - if semantic segmentation, then must specify class names
         # if fog, every channel creates its own mix node
 
         bpy.context.scene.use_nodes = True #common
+        bpy.context.scene.frame_end = animFrameEnd
+
         self.tree = bpy.context.scene.node_tree
         self.camera.makeActive()
 
@@ -66,14 +68,15 @@ class Annotations :
         if 'flow' in arrOfOutputs:
             self.generateFlow()
 
-        bpy.ops.render.render(animation=True, write_still=True)
+        bpy.ops.render.view_show()
+        bpy.ops.render.render(animation=True)
+        # bpy.ops.render.render(animation=True, write_still=True)
 
         if 'depth' in arrOfOutputs:
             self.convertDepthToPlasma()
         if 'flow' in arrOfOutputs:
-            folder_dir = self.outputFilePath + "/flow/metric/"
-            self.convertFlowToFlo()
-
+            folder_dir = self.outputFilePath + "/flow/exr/"
+            self.convertFlowToFlo(folder_dir=folder_dir)
         
     def generateDepth(self, renderEngine="CYCLES"):
         """ 
@@ -199,32 +202,34 @@ class Annotations :
     def generateFlow(self):
         fileOutput = self.tree.nodes.new(type="CompositorNodeOutputFile")
         fileOutput.file_slots.clear()
+        fileOutput_node_name = "flow"
 
-        fileOutput.layer_slots.new("flow_metric")
+        fileOutput.layer_slots.new(fileOutput_node_name)
         links = self.tree.links
 
         
         if self.is_fog:
             mix_node = self.tree.nodes.new('CompositorNodeMixRGB')
             links.new(self.rl.outputs["Mist"], mix_node.inputs["Fac"])
-            links.new(self.rl.outputs["Normal"], mix_node.inputs["Image"])
-            links.new(mix_node.outputs[0], fileOutput.inputs["flow_metric"])
+            links.new(self.rl.outputs["Vector"], mix_node.inputs["Image"])
+            links.new(mix_node.outputs[0], fileOutput.inputs[fileOutput_node_name])
         else:    
-            links.new(self.rl.outputs["Normal"], fileOutput.inputs["flow_metric"])
+            links.new(self.rl.outputs["Vector"], fileOutput.inputs[fileOutput_node_name])
         
         fileOutput.format.file_format = "OPEN_EXR"
-        fileOutput.base_path = self.outputFilePath + "/flow/metric/"
+        fileOutput.base_path = self.outputFilePath + "/flow/exr/"
 
     def convertDepthToPlasma(self):
         dir = self.outputFilePath + "/depth/metric/"
-        save_dir = self.outputFilePath+"depth/"
+        save_dir = self.outputFilePath+"/depth/viz/"
         # loop through images in the directory
         i = 0
         for filename in os.listdir(dir):
             img = self.get_exr_rgb(dir+filename)
-            if not os.path.isdir(save_dir+"viz"):
-                os.mkdir(save_dir+"viz")
-            save_dir = save_dir+"viz/"
+            print("savedir + viz : ", save_dir)
+            if not os.path.isdir(save_dir):
+                os.mkdir(save_dir)
+                
             filename = os.path.splitext(os.path.basename(filename))[0]
             im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             img= cv2.applyColorMap(im, cv2.COLORMAP_PLASMA)
@@ -237,48 +242,9 @@ class Annotations :
         img = np.where(img<=0.0031308, 12.92*img, 1.055*np.power(img, 1/2.4) - 0.055)
         return (img*255).astype(np.uint8)
         
-    def Exr2Flow(self, exrfile):
-        file = OpenEXR.InputFile(exrfile)
-
-        # Compute the size
-        dw = file.header()['dataWindow']
-        ImgSize = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
-        [Width, Height] = ImgSize
-
-
-        # R and G channel stores the flow in (u,v) (Read Blender Notes)
-        FLOAT = Imath.PixelType(Imath.PixelType.FLOAT)
-        (R,G,B) = [array.array('f', file.channel(Chan, FLOAT)).tolist() for Chan in ("R", "G", "B")]
-        
-        Img = np.zeros((Height, Width, 3), np.float64)
-        Img[:,:,0] = np.array(R).reshape(Img.shape[0], -1)
-        Img[:,:,1] = -np.array(G).reshape(Img.shape[0], -1)
-	
-        return Img, Width, Height
-
-    def WriteFloFile(self, exrfile, Img, TAG_STRING, Width, Height):
-        # Write to a .flo file: 
-        # Ref: https://github.com/Johswald/flow-code-python/blob/master/writeFlowFile.py
-        f = open(exrfile[:-4]+'.flo','wb')
-        f.write(TAG_STRING)
-        np.array(Width).astype(np.int32).tofile(f)
-        np.array(Height).astype(np.int32).tofile(f)
-        nBands = 2
-        tmp = np.zeros((Height, Width * nBands))
-        tmp[:,np.arange(Width)*2] = Img[:,:,0]
-        tmp[:,np.arange(Width)*2 + 1] = Img[:,:,1]
-        tmp.astype(np.float32).tofile(f)
-        print("img : ", f.shape)
-        f.close()
-    
     def convertFlowToFlo(self, folder_dir):
-        for image in os.listdir(folder_dir):
-            if "exr" in image:
-                exrfile = folder_dir+image
-                TAG_STRING = 'PIEH'
-                Img, Width, Height = self.Exr2Flow(exrfile)
-                self.WriteFloFile(exrfile, Img, TAG_STRING, Width, Height)
-                
+        os.system("python WorldGen/Exr2FloSingleFile.py --folderDir " + folder_dir)
+
 #     def generateSurfaceNormals(self, renderEngine="CYCLES"):
 #         """ 
 #         Generates surface normals for selected camera
