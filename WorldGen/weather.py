@@ -35,10 +35,16 @@ def addWeather(self, sky_hdri='', lighting='midday', weather='clear', hdri_img='
     # Add a plane
     if weather == 'rain':
         terrain_dim = bpy.data.objects["Terrain"].dimensions
-        rain_plane = new_plane((0,0,500), 1.0, "rain_plane")
+        rain_plane = new_plane((0,0,200), 1.0, "rain_plane")
         # print('rain obj: ', rain)
         # bpy.data.objects["rain_plane"].dimensions = bpy.data.objects["Terrain"].dimensions
         rain_plane.dimensions = bpy.data.objects["Terrain"].dimensions
+        bpy.context.view_layer.objects.active = rain_plane
+        mat = bpy.data.materials.new(name='rain_surface_material')
+        mat.use_nodes = True
+        rain_plane.data.materials.append(mat)
+        mat.node_tree.nodes["Principled BSDF"].inputs["Alpha"].default_value = 0.0
+        rain_plane.active_material = mat
 
         # adding a particle system
         bpy.ops.object.particle_system_add()
@@ -48,7 +54,8 @@ def addWeather(self, sky_hdri='', lighting='midday', weather='clear', hdri_img='
         rain_drop.dimensions = (0.2, 0.2, 3.05)
 
         particles.instance_object = rain_drop
-    
+        particles.lifetime = 180
+            
     if weather == 'fog':
         scene = bpy.context.scene
         scene.view_layers["ViewLayer"].use_pass_mist = True
