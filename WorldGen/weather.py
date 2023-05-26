@@ -2,25 +2,27 @@ import bpy
 
 from .utils import new_plane, new_sphere, add_wind
 
-def addWeather(self, lighting='midday', weather='clear', hdri_img=''):
+def addWeather(self, sky_hdri='', lighting='midday', weather='clear', hdri_img=''):
 
     # Remove all worlds
     for i, world in enumerate(bpy.data.worlds):
         bpy.data.worlds.remove(bpy.data.worlds[i])
-    
-    # three options : midday, sunset, night
-    if lighting == "midday":
-        if hdri_img == "":
-            hdri_img = "https://polyhaven.com/a/sunflowers_puresky"
-    
-    elif lighting == 'sunset':
-        if hdri_img == "":
-            hdri_img = "https://polyhaven.com/a/the_sky_is_on_fire"
-    
+    if not sky_hdri == '':
+        hdri_img = sky_hdri
     else:
-        # night
-        if hdri_img == "":
-            hdri_img = "https://polyhaven.com/a/moonlit_golf"
+        # three options : midday, sunset, night
+        if lighting == "midday":
+            if hdri_img == "":
+                hdri_img = "https://polyhaven.com/a/sunflowers_puresky"
+        
+        elif lighting == 'sunset':
+            if hdri_img == "":
+                hdri_img = "https://polyhaven.com/a/the_sky_is_on_fire"
+        
+        else:
+            # night
+            if hdri_img == "":
+                hdri_img = "https://polyhaven.com/a/moonlit_golf"
     
     bpy.ops.object.lily_world_import(url=hdri_img) # creates the world for us
     bpy.data.worlds[0].node_tree.nodes["Mapping"].inputs[1].default_value[2] = 1.0

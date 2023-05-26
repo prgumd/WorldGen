@@ -11,8 +11,11 @@ from .utils import checkOverlap, getListofBuildings, pokeStreet, createCurve, ge
 from scipy import spatial
 
 
+
 class Simulator:
     
+    from .weather import addWeather
+
     def __init__(self, blendFilePath, isTwoWay=True):
         """
         Args:
@@ -103,7 +106,6 @@ class Simulator:
         self.addingToSidewalks("benches", benchObjects, twinBenchCollection, numOfBenches, intersections)
         bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
         
-        return
     
         self.addTextureToStreets(streetTextures["street_texture_url"], streetTextures["street_texture_name"])
 
@@ -129,7 +131,6 @@ class Simulator:
             bpy.ops.object.mode_set(mode = 'EDIT')
             bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, "use_dissolve_ortho_edges":False, "mirror":False}, TRANSFORM_OT_translate={"value":(4.65661e-10, 4.65661e-10, -0.425891), "orient_axis_ortho":'X', "orient_type":'NORMAL', "orient_matrix":((0.999904, -0.000133084, -0.0138799), (1.25411e-06, 0.999955, -0.00949752), (0.0138805, 0.00949659, 0.999859)), "orient_matrix_type":'NORMAL', "constraint_axis":(False, False, True), "mirror":False, "use_proportional_edit":False, "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "use_proportional_connected":False, "use_proportional_projected":False, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "view2d_edge_pan":False, "release_confirm":False, "use_accurate":False, "use_automerge_and_split":False})
             road.select_set(False)
-        bpy.ops.object.mode_set(mode = 'OBJECT')
 
             
     def moveToCollection(self, objects, collection):
@@ -830,7 +831,7 @@ class Simulator:
                 obj[0].scale = [0.462, 0.462, 0.462]
                 for o in set_of_objects:
                     distance = math.sqrt((vertex_coords.x - o.location.x)**2 + (vertex_coords.y - o.location.y)**2)
-                    if distance  < 5:
+                    if distance  < 15:
                         obj_deleted = True
                 
 
@@ -1211,8 +1212,6 @@ class Simulator:
         path.hide_viewport = True
         self.deselectObjects()
         
-
-    
     def add_cars(self, count, street, carObjList, carCollection):
         self.deselectObjects()
         bpy.ops.object.mode_set(mode = 'OBJECT')
@@ -1267,15 +1266,14 @@ class Simulator:
             car_path = carObjList[random.randint(0, len(carObjList))-1]
             bpy.ops.import_scene.obj(filepath=car_path, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl")
             obj = bpy.context.selected_objects
-            if len(obj) == 0:
-                continue
+            
             car = obj[0]
         
             # car.users_collection[0].objects.unlink(car)
             # carCollection.objects.link(car)
             car.name = "car" + str(i)
             car_location = polyline.points[len(coords)].co
-            # bpy.context.view_layer.objects.active = car
+            bpy.context.view_layer.objects.active = car
             car.select_set(True)
             
             bpy.ops.object.constraint_add(type='FOLLOW_PATH')
@@ -1296,13 +1294,3 @@ class Simulator:
             bpy.ops.wm.save_as_mainfile(filepath=self.filepath)
         
         return carObjs
-        
-
-
-
-
-
-
-
-                
-        

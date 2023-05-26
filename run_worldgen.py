@@ -1,8 +1,6 @@
 import sys
 import bpy
 
-sys.path.append('/opt/homebrew/Caskroom/miniforge/base/lib/python3.9/site-packages')
-sys.path.append('/opt/homebrew/bin/')
 sys.path.append("./settings")
 sys.path.append("./")
 
@@ -50,6 +48,7 @@ with open('texturesAndObjectsConfig.yaml') as f:
     BUILDING_SCALE = data["building_scale"]
     MAX_NUM_OF_ROOF_OBJS = data["max_number_of_roof_obj"]
     ROOF_OBJ_SCALE = data["roof_obj_scale"]
+    SKY_HDRI = data["sky_hdri"]
 
     
 def main():
@@ -68,11 +67,11 @@ def main():
                             roofObjects=ROOF_OBJECTS, carObjs=CAR_OBJECTS, numOfCars=2, numOfBenches=20, numOfStreetLamps=20, buildingScale = BUILDING_SCALE,
                             maxNumRoofObj=MAX_NUM_OF_ROOF_OBJS, roofObjScale=ROOF_OBJ_SCALE)
         
-        # camera = simulation.addCamera() # doesn't work correctly yet
+        camera = simulation.addCamera() # doesn't work correctly yet
     
 
     # add hdri
-    # simulation.addWeather(WEATHER[0], WEATHER[1])
+    simulation.addWeather(SKY_HDRI,WEATHER[0], WEATHER[1])
 
 
     # add different lens to camera...
@@ -80,11 +79,11 @@ def main():
     # Can now run simulation and get annotations
     # camera.makeActive()
     # # output_folder = "/Users/riyakumari/Desktop/world-gen/renders" #make sure this is the entire file path, not relative
-    # if ONLY_RENDER_ANNOTATIONS:
-    #     camera = None
-    # if not len(OUTPUTS) == 0:
-    #     annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
-    #     annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
+    if ONLY_RENDER_ANNOTATIONS:
+        camera = None
+    if not len(OUTPUTS) == 0:
+        annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
+        annotations.generateOutputs(OUTPUTS, CLASS_NAMES)
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
    
     

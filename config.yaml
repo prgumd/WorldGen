@@ -1,13 +1,13 @@
 ---
- python_system_path: "/opt/homebrew/Caskroom/miniforge/base/lib/python3.9/site-packages"
- render_dir: "/Users/riyakumari/WorldGen/render/" # required
- blend_filepath: "/Users/riyakumari/WorldGen/test.blend" # required
+ python_system_path: "/home/chahatdeep/.local/lib/python3.8/site-packages"
+ render_dir: "/render" # required
+ blend_filepath: "/home/chahatdeep/git_cloned/worldgen-dev/WorldGen/test.blend" # required
  only_render_annotations: False
  render_engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
  image_resolution: [1024, 1024, 100] 
  scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
  outputs: []
- is_suburbs: True
+ is_suburbs: False
  two_way_streets: True
  weather:
    - midday
