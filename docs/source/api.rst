@@ -4,4 +4,4 @@ Examples
 .. autosummary::
    :toctree: generated
 
-   lumache
+   WorldGen
