@@ -49,7 +49,9 @@ class Annotations :
         # classNames - if semantic segmentation, then must specify class names
         # if fog, every channel creates its own mix node
 
-        bpy.context.scene.use_nodes = True #common
+        bpy.context.scene.use_nodes = True #common\
+
+        self.setCameraSettings(CAMERA_SETTINGS)
         
 
         self.tree = bpy.context.scene.node_tree
@@ -63,6 +65,10 @@ class Annotations :
 
         if 'image' in arrOfOutputs:
             self.generateImage()
+            render = True
+
+        if '360' in arrOfOutputs:
+            self.generate360()
             render = True
 
         if 'depth' in arrOfOutputs:
@@ -97,6 +103,17 @@ class Annotations :
             self.generateEvents(folder_dir=folder_dir)
         
 
+    def setCameraSettings(self,CAMERA_SETTINGS):
+        # LENS SETTINGS:
+        self.camera.obj.data.type = CAMERA_SETTINGS[11]["lens_type"]
+        bpy.context.scene.frame_end = CAMERA_SETTINGS[3]['end_frame']
+
+    def generate360(self,):
+        self.camera.obj.data.type = "PANO"
+        self.camera.obj.data.cycles.panorama_type = "EQUIRECTANGULAR"    
+        bpy.context.scene.render.filepath = self.outputFilePath + "/360/"
+        bpy.context.scene.render.image_settings.file_format = "PNG"    
+
     def generateImage(self):
         links = self.tree.links
         
@@ -105,10 +122,9 @@ class Annotations :
         fileOutput.file_slots.clear()
         fileOutput.layer_slots.new("image")
         fileOutput.format.file_format = "PNG"
-        print("self.rl.outputs: ", self.rl.outputs[0])
+
         links.new(self.rl.outputs["Image"], fileOutput.inputs["image"])
         fileOutput.base_path = self.outputFilePath + "/image/"
-        print("here")
 
     def generateDepth(self, renderEngine="CYCLES"):
         """ 
@@ -283,6 +299,7 @@ class Annotations :
         return (img*255).astype(np.uint8)
         
     def convertFlowToFlo(self, folder_dir):
+        print("converting to flow")
         os.system("python WorldGen/Exr2FloSingleFile.py --folderDir " + folder_dir)
 
     def generateEvents(self, folder_dir):

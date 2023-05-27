@@ -32,7 +32,7 @@ with open('config.yaml') as f:
 sys.path.append(SYSTEM_PATH)
     
 
-with open('texturesAndObjectsConfig.yaml') as f:
+with open('materials.yaml') as f:
     data = yaml.load(f, Loader=SafeLoader)
     TERRAIN_TEXTURES = data["terrain"]
     ROOF_TEXTURES = data["roof"]
@@ -73,7 +73,7 @@ def main():
                             roofObjects=ROOF_OBJECTS, carObjs=CAR_OBJECTS, numOfCars=2, numOfBenches=20, numOfStreetLamps=20, buildingScale = BUILDING_SCALE,
                             maxNumRoofObj=MAX_NUM_OF_ROOF_OBJS, roofObjScale=ROOF_OBJ_SCALE)
         
-        camera = simulation.addCamera() # doesn't work correctly yet
+        camera = simulation.addCamera()
     
 
         # add hdri
@@ -90,7 +90,7 @@ def main():
     if not len(OUTPUTS) == 0:
         annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
         annotations.generateOutputs(OUTPUTS, CLASS_NAMES, CAMERA_SETTINGS)
-    bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
+    # bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
    
     
 

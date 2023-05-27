@@ -71,6 +71,13 @@ def set_render(render_settings):
     bpy.context.scene.cycles.time_limit = render_settings[4]['render_time_limit']
     bpy.context.scene.cycles.use_denoising = render_settings[5]['render_denoiser']
 
+    bpy.context.scene.cycles.tile_size = render_settings[8]['tile_size'] # 2048 Works best for with NVIDIA TITAN X
+    bpy.context.scene.cycles.debug_use_spatial_splits = render_settings[9]['use_spatial_splits']
+    bpy.context.scene.cycles.debug_use_hair_bvh = render_settings[10]['use_hair_bvh']
+    bpy.context.scene.cycles.debug_use_compact_bvh = render_settings[11]['use_compact_bvh']
+    bpy.context.scene.render.use_persistent_data = render_settings[12]['use_persistent_data']
+    bpy.context.scene.view_layers["ViewLayer"].pass_alpha_threshold = 1e-12
+
     if render_settings[6]['enable_fast_GI']:
         bpy.context.scene.cycles.max_bounces = 8
         bpy.context.scene.cycles.diffuse_bounces = 1

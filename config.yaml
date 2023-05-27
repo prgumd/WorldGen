@@ -1,12 +1,12 @@
 ---
  python_system_path: "/home/chahatdeep/.local/lib/python3.8/site-packages"
  render_dir: "render" # required
- blend_filepath: "/home/chahatdeep/git_cloned/worldgen-dev/WorldGen/test_annotations.blend" # required
- only_render_annotations: True
+ blend_filepath: "/home/chahatdeep/git_cloned/worldgen-dev/WorldGen/test.blend" # required
+ only_render_annotations: False
  render_engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
  image_resolution: [1024, 1024, 100] 
  scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- outputs: ["events"]
+ outputs: ["image", "events", "depth", "flow", '360', 'semantic_seg']
  is_suburbs: False
  two_way_streets: True
  weather:
@@ -19,12 +19,13 @@
    - start_frame: 1
    - end_frame: 10
    - frame_step: 1
-   - time_stretching: 10
+   - time_stretching: 100 # this is with no time-stretching
    - motion_blur: "on"
    - shutter_time: 0  
    - lens_focus_distance: 10
    - lens_aperture_fstop: 2.8
    - lens_aperture_ratio: 1  
+   - lens_type: "PERSP" # 'PERSP', 'ORTHO', 'PANO'
  render_settings: 
    - enable_render_region: True
    - enable_crop_to_render_region: True
@@ -34,3 +35,8 @@
    - render_denoiser: True
    - enable_fast_GI: True
    - enable_camera_clipping: [0.1,100]
+   - tile_size: 2048
+   - use_spatial_splits: True
+   - use_hair_bvh: True
+   - use_compact_bvh: True
+   - use_persistent_data: True
