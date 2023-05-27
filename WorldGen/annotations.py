@@ -18,6 +18,7 @@ from .utils import select_objects, deselect_all_objects, get_obj_with_name, assi
 import matplotlib.colors as mcolors
 from matplotlib import colors
 
+
 # depth, stereo, semantic seg
 class Annotations : 
     def __init__(self, outputFolder, camera:Camera, is_fog:bool):
@@ -58,24 +59,31 @@ class Annotations :
         bpy.context.scene.cycles.samples = 8
        
         self.rl = self.tree.nodes.new('CompositorNodeRLayers')
-        
+        render = False
+
         if 'image' in arrOfOutputs:
             self.generateImage()
+            render = True
 
         if 'depth' in arrOfOutputs:
             self.generateDepth()
-                 
+            render = True
+
         if 'stereo' in arrOfOutputs:
             self.generateStereo()
+            render = True
 
         if 'semantic_seg' in arrOfOutputs:
             self.generateSemanticSeg(classNames)
+            render = True
 
         if 'flow' in arrOfOutputs:
             self.generateFlow()
-
-        bpy.ops.render.view_show()
-        bpy.ops.render.render(animation=True)
+            render = True
+        
+        if render:
+            bpy.ops.render.view_show()
+            bpy.ops.render.render(animation=True)
         # bpy.ops.render.render(animation=True, write_still=True)
 
         if 'depth' in arrOfOutputs:
@@ -83,6 +91,11 @@ class Annotations :
         if 'flow' in arrOfOutputs:
             folder_dir = self.outputFilePath + "/flow/exr/"
             self.convertFlowToFlo(folder_dir=folder_dir)
+
+        if "events" in arrOfOutputs:
+            folder_dir = self.outputFilePath + "/image/"
+            self.generateEvents(folder_dir=folder_dir)
+        
 
     def generateImage(self):
         links = self.tree.links
@@ -95,6 +108,7 @@ class Annotations :
         print("self.rl.outputs: ", self.rl.outputs[0])
         links.new(self.rl.outputs["Image"], fileOutput.inputs["image"])
         fileOutput.base_path = self.outputFilePath + "/image/"
+        print("here")
 
     def generateDepth(self, renderEngine="CYCLES"):
         """ 
@@ -270,6 +284,9 @@ class Annotations :
         
     def convertFlowToFlo(self, folder_dir):
         os.system("python WorldGen/Exr2FloSingleFile.py --folderDir " + folder_dir)
+
+    def generateEvents(self, folder_dir):
+        os.system("python WorldGen/ev_sim.py --folderDir " + folder_dir + " --outputDir " + self.outputFilePath + "/events/")
 
 #     def generateSurfaceNormals(self, renderEngine="CYCLES"):
 #         """ 

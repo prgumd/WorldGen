@@ -6,7 +6,7 @@
  render_engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
  image_resolution: [1024, 1024, 100] 
  scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- outputs: ['image']
+ outputs: ["events"]
  is_suburbs: False
  two_way_streets: True
  weather:
