@@ -43,13 +43,13 @@ class Annotations :
         bpy.context.scene.view_layers[view_layer_name].use_pass_vector = True
         bpy.context.scene.view_layers[view_layer_name].use_pass_object_index = True
 
-    def generateOutputs(self, arrOfOutputs, classNames, animFrameEnd=20):
+    def generateOutputs(self, arrOfOutputs, classNames, CAMERA_SETTINGS):
         # arrOfOutputs (string[])
         # classNames - if semantic segmentation, then must specify class names
         # if fog, every channel creates its own mix node
 
         bpy.context.scene.use_nodes = True #common
-        bpy.context.scene.frame_end = animFrameEnd
+        
 
         self.tree = bpy.context.scene.node_tree
         self.camera.makeActive()

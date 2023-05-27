@@ -2,15 +2,35 @@
  python_system_path: "/home/chahatdeep/.local/lib/python3.8/site-packages"
  render_dir: "render" # required
  blend_filepath: "/home/chahatdeep/git_cloned/worldgen-dev/WorldGen/test_annotations.blend" # required
- only_render_annotations: False
+ only_render_annotations: True
  render_engine: "CYCLES" # required, choose from BLENDER_EEVEE, or CYCLES
  image_resolution: [1024, 1024, 100] 
  scene_coordinates: [-122.39622,37.79148,-122.38925,37.79431]
- animation_frame_end: 20
- outputs: ["semantic_seg"]
+ outputs: ['image']
  is_suburbs: False
  two_way_streets: True
  weather:
    - midday
    - clear  
  class_names: ["Trees", "StreetLamps", "TwinBenches", "buildings", "roads", "Terrain", "buildings", "car"]
+ camera_settings:
+   - field_of_view: 1.2
+   - number_of_frames: 10
+   - start_frame: 1
+   - end_frame: 10
+   - frame_step: 1
+   - time_stretching: 10
+   - motion_blur: "on"
+   - shutter_time: 0  
+   - lens_focus_distance: 10
+   - lens_aperture_fstop: 2.8
+   - lens_aperture_ratio: 1  
+ render_settings: 
+   - enable_render_region: True
+   - enable_crop_to_render_region: True
+   - render_noise_threshold: True
+   - render_max_samples: 10
+   - render_time_limit: 10
+   - render_denoiser: True
+   - enable_fast_GI: True
+   - enable_camera_clipping: [0.1,100]

@@ -102,7 +102,7 @@ def assign_pass_indexes_by_name(classNames):
         is_collection_name = False # reset for next iteration
         pass_index = pass_index + 1
 
-def assign_pass_indexes_by_collection_name(classNames):
+def assign_pass_indexes(classNames):
     pass_index = 0
     is_collection_name = False
     for className in classNames:

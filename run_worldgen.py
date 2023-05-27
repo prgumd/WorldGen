@@ -25,7 +25,9 @@ with open('config.yaml') as f:
     ONLY_RENDER_ANNOTATIONS = data["only_render_annotations"]
     IS_SUBURBS = data['is_suburbs']
     SYSTEM_PATH = data["python_system_path"]
-    ANIMATION_FRAME_END = data["animation_frame_end"]
+    CAMERA_SETTINGS = data["camera_settings"]
+    RENDER_SETTINGS = data["render_settings"]
+
 
 sys.path.append(SYSTEM_PATH)
     
@@ -56,9 +58,12 @@ def main():
     if not ONLY_RENDER_ANNOTATIONS:
         # initialize settings
         WorldGen.set_render_engine(RENDER_ENGINE)
+        
+        WorldGen.set_camera(CAMERA_SETTINGS)
+        WorldGen.set_render(RENDER_SETTINGS)
         WorldGen.set_metadata_properties()
         WorldGen.set_image_resolution(IMAGE_RESOLUTION[0], IMAGE_RESOLUTION[1], IMAGE_RESOLUTION[2])
-
+   
 
         # create simulation
         simulation = WorldGen.Simulator(BLEND_FILEPATH, TWO_WAY_STREETS)
@@ -84,7 +89,7 @@ def main():
         camera = None
     if not len(OUTPUTS) == 0:
         annotations = WorldGen.Annotations(RENDER_DIR, camera, WEATHER[1] == "fog")
-        annotations.generateOutputs(OUTPUTS, CLASS_NAMES, ANIMATION_FRAME_END)
+        annotations.generateOutputs(OUTPUTS, CLASS_NAMES, CAMERA_SETTINGS)
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILEPATH)
    
     
