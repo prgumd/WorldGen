@@ -46,7 +46,8 @@ Authors:
 
 =====
 
-Table of Content:
+Table of Content
+----
 
 .. toctree::
    :maxdepth: 0
