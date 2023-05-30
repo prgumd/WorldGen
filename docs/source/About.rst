@@ -24,7 +24,7 @@ Citation
 ----
 
 .. image:: ../images/paper/paper_thumb.png
-  :width: 25%
+  :width: 15%
   :alt: Paper Thumbnail
 
 - Singh, C.D., Kumari, R., Fermüller, C., Sanket, N.J. and Aloimonos, Y., 
