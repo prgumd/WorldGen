@@ -2,7 +2,7 @@ LICENSE
 ----
 
 WorldGen is under MIT License that is free to use for both personal and commercial use and is open to any modifications and distributions.
-Please feel free to contribute towards the project, especially adding new sensing modalities to our environment. Use the standard `Pull Request <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request>`_ on Github for contribution.
+Please feel free to contribute towards the project, especially adding new sensing modalities to our environment. Use the standard `Pull Request<https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request>`_ on Github for contribution.
 
 ----
 
