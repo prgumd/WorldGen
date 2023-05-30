@@ -46,8 +46,9 @@ Authors:
 
 .. toctree::
    :maxdepth: 0
-   :caption: WorldGen <https://worldgen.readthedocs.io/>
-
+   :caption: WorldGen
+   
+   Home <https://worldgen.readthedocs.io/>
 
 .. toctree::
    :maxdepth: 1
