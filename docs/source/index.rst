@@ -48,6 +48,7 @@ Authors:
    :maxdepth: 2
    :caption: Contents:
    
+   index
    GettingStarted
    About
    Installation
