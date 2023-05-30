@@ -23,11 +23,13 @@ To this end, we present WorldGen - an open source framework to autonomously gene
 Environments
 ====
 Currently, WorldGen supports three different environments: (more coming soon)
+
 #. CiyMaps: This utilizes semantics from OpenStreet Maps and combines it with open-source models, textures and HDRI sources to generate a digital twin of existing cities in Blender rendering engine.
 #. ObjectPile: We import open source collection of 3D objects in a table top environment with different textures wrapped over these objects as well as use dynamic lighting and depth of field effects for rendering. We also incorporate variational UV mapping to modify these objects in terms of both textures and structure.
 #. Object Fragmentation: This environment shows how an objects fall on a table top scene or collide with another object and breaks into a user-define N segments.
 
 For all these 3D environments, we currently support generation of high quality data using Cycles (or 'EEVEE' only for RGB and Depth) rendering engine with annotations:
+
 #. RGB Images
 #. Depth Maps
 #. Optical Flow
