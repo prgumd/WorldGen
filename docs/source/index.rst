@@ -48,7 +48,7 @@ Authors:
    :maxdepth: 0
    :caption: WorldGen
    
-   Home <index>
+   Home </>
 
 
 .. toctree::
