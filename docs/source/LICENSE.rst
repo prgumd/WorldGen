@@ -6,6 +6,8 @@ Please feel free to contribute towards the project, especially adding new sensin
 
 ----
 
+.. code-block:: console
+
 MIT License
 
 Copyright (c) 2023 Perception and Robotics Group (PRG)
