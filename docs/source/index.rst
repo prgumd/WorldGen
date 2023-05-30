@@ -1,7 +1,7 @@
 Welcome to WorldGen's documentation!
 ===================================
 
-.. image:: /docs/source/images/logos/prg-black.png
+.. image:: ../images/logo/prg-black.png
   :width: 400
   :alt: Perception and Robotics Group
 
