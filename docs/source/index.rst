@@ -5,6 +5,7 @@ Welcome to WorldGen's documentation!
 
 ----
 Authors:
+
 * `Chahat Deep Singh <https://chahatdeep.github.io/>`_ (Maintainer)
 * `Riya Kumari <http://prg.cs.umd.edu/WorldGen>`_ (Maintainer)
 * `Cornelia Fermüller <http://users.umiacs.umd.edu/~fer/>`_
