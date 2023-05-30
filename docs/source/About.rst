@@ -21,7 +21,7 @@ To this end, we present WorldGen - an open source framework to autonomously gene
 ----
 
 Environments
-====
+----
 Currently, WorldGen supports three different environments: (more coming soon)
 
 #. CiyMaps: This utilizes semantics from OpenStreet Maps and combines it with open-source models, textures and HDRI sources to generate a digital twin of existing cities in Blender rendering engine.
