@@ -2,8 +2,17 @@ Welcome to WorldGen's documentation!
 ===================================
 
 .. image:: ../images/logo/prg-black.png
-  :width: 400
+  :width: 32%
   :alt: Perception and Robotics Group
+
+.. image:: ../images/logo/prg-black.png
+  :width: 32%
+  :alt: Perception and Robotics Group
+
+.. image:: ../images/logo/prg-black.png
+  :width: 32%
+  :alt: Perception and Robotics Group
+
 
 **WorldGen** is an open source framework to automatically generate petabytes of annotated structured and unstructured 3D photorealistic scenes -- including city maps, multiple objects in motion and object fragmentation.
 
