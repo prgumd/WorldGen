@@ -49,6 +49,7 @@ Authors:
    :caption: Contents:
    
    GettingStarted
+   About
    Installation
    Simulator
    Assets
