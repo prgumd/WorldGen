@@ -23,7 +23,9 @@ Welcome to WorldGen's documentation!
    This project is under active development.
 
 ----
+
 Authors:
+----
 
 * `Chahat Deep Singh <https://chahatdeep.github.io/>`_ (Maintainer)
 * `Riya Kumari <http://prg.cs.umd.edu/WorldGen>`_ (Maintainer)
@@ -46,7 +48,6 @@ Authors:
 
 .. toctree::
    :maxdepth: 0
-   :caption: WorldGen
    
    Home <https://worldgen.readthedocs.io/>
 
