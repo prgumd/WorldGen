@@ -2,15 +2,15 @@ Welcome to WorldGen's documentation!
 ===================================
 
 .. image:: ../images/logo/prg-black.png
-  :width: 32%
+  :width: 33%
   :alt: Perception and Robotics Group
 
-.. image:: ../images/logo/prg-black.png
-  :width: 32%
+.. image:: ../images/logo/umd-logo-white.png
+  :width: 33%
   :alt: Perception and Robotics Group
 
-.. image:: ../images/logo/prg-black.png
-  :width: 32%
+.. image:: ../images/logo/WPILogo.png
+  :width: 33%
   :alt: Perception and Robotics Group
 
 
