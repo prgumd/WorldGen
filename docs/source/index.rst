@@ -9,7 +9,7 @@ Welcome to WorldGen's documentation!
   :width: 30%
   :alt: University of Maryland - College Park
 
-.. image:: ../images/logo/WPILogo.png
+.. image:: ../images/logo/WPIlogo.png
   :width: 30%
   :alt: Worcester Polytechnic Institute
 
