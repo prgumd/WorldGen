@@ -45,57 +45,62 @@ Authors:
 =====
 
 .. toctree::
-   :maxdepth: 2
-   :caption: GettingStarted
+   :maxdepth: 1
+   :caption: WorldGen
+   
+   Home <index>
 
-   About
-   LICENSE
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+
+   About WorldGen <About>
+   Why WorldGen?
+   LICENSE <LICENSE>
    
 
 .. toctree::
    :maxdepth: 2
-   :caption: Setup
-    
-   Installation
-   Simulator
+   :caption: WorldGen Setup
+   
+   Installation Guide <Installation>
+   Understanding the Environment <Simulator>
    
    
 .. toctree::
    :maxdepth: 2
-   :caption: CityMaps
+   :caption: City Maps
 
-   CityScenes
-   ObjectPile
-   ObjectFragment
-   RenderSettings
-   CameraSettings
-   Annotations
-   Physics
+   Create your First Digital Twin of a City <CityScenes>
+   City Config Files <City Config>
+   Assets <Assets>
+   WorldGen on Custom Data (Coming Soon) <> 
    
 .. toctree::
    :maxdepth: 2
-   :caption: ObjectPile
+   :caption: Object Pile
  
-   ObjectPile
+   ObjectPile <ObjectPile>
    
 .. toctree::
    :maxdepth: 2
-   :caption: ObjectPile
+   :caption: Object Fragmentation
  
-   ObjectFragment
+   ObjectFragment <ObjectFragment>
    
 .. toctree::
    :maxdepth: 2
-   :caption: Rendering
+   :caption: Rendering 
     
-   Annotations
-   CameraSettings
-   RenderSettings
-   Physics
+   Annotations <Annotations>
+   CameraSettings <CameraSettings>
+   RenderSettings <RenderSettings>
+   Physics <Physics>
    
 .. toctree::
    :maxdepth: 2
    :caption: Extras
    
-   Assets
-   Metadata
+   Other Assets <other-assets>
+   Metadata <Metadata>
