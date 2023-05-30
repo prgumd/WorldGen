@@ -46,23 +46,56 @@ Authors:
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-   
-   index
-   GettingStarted
+   :caption: GettingStarted:
+
    About
+   LICENSE
+   
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Setup:
+    
    Installation
    Simulator
-   Assets
-   Metadata
+   
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: CityMaps:
+
    CityScenes
    ObjectPile
-   ObjectDefragment
+   ObjectFragment
    RenderSettings
    CameraSettings
    Annotations
    Physics
    
+.. toctree::
+   :maxdepth: 2
+   :caption: ObjectPile:
+ 
+   ObjectPile
    
+.. toctree::
+   :maxdepth: 2
+   :caption: ObjectPile:
+ 
+   ObjectFragment
    
+.. toctree::
+   :maxdepth: 2
+   :caption: Rendering:
+    
+   Annotations
+   CameraSettings
+   RenderSettings
+   Physics
    
+.. toctree::
+   :maxdepth: 2
+   :caption: Extras:
+   
+   Assets
+   Metadata
