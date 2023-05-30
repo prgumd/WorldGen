@@ -27,14 +27,15 @@ Citation
   :width: 15%
   :alt: Paper Thumbnail
 
-- Singh, C.D., Kumari, R., Fermüller, C., Sanket, N.J. and Aloimonos, Y., 
-WorldGen: A Large Scale Generative Simulator. 
-2023 IEEE International Conference on Robotics and Automation (ICRA)
-
-.. code-block:: latex
-@article{singh2022worldgen,
-  title={WorldGen: A Large Scale Generative Simulator},
-  author={Singh, Chahat Deep and Kumari, Riya and Ferm{\"u}ller, Cornelia and Sanket, Nitin J and Aloimonos, Yiannis},
-  journal={arXiv preprint arXiv:2210.00715},
-  year={2022}
-}
+* | Singh, C.D., Kumari, R., Fermüller, C., Sanket, N.J. and Aloimonos, Y., 
+  | WorldGen: A Large Scale Generative Simulator. 
+  | 2023 IEEE International Conference on Robotics and Automation (ICRA)
+`Video <https://www.youtube.com/watch?v=IOz8-KL900A&pp=ygUPd29ybGRnZW4gcHJndW1k>`__
+BibTex::
+* | 
+  | @article{singh2022worldgen,
+  | title={WorldGen: A Large Scale Generative Simulator},
+  | author={Singh, Chahat Deep and Kumari, Riya and Ferm{\"u}ller, Cornelia and Sanket, Nitin J and Aloimonos, Yiannis},
+  | journal={arXiv preprint arXiv:2210.00715},
+  | year={2022}
+  | }
