@@ -23,18 +23,18 @@ To this end, we present WorldGen - an open source framework to autonomously gene
 Environments
 ====
 Currently, WorldGen supports three different environments: (more coming soon)
-1. CiyMaps: This utilizes semantics from OpenStreet Maps and combines it with open-source models, textures and HDRI sources to generate a digital twin of existing cities in Blender rendering engine.
-2. ObjectPile: We import open source collection of 3D objects in a table top environment with different textures wrapped over these objects as well as use dynamic lighting and depth of field effects for rendering. We also incorporate variational UV mapping to modify these objects in terms of both textures and structure.
-3. Object Fragmentation: This environment shows how an objects fall on a table top scene or collide with another object and breaks into a user-define N segments.
+#. CiyMaps: This utilizes semantics from OpenStreet Maps and combines it with open-source models, textures and HDRI sources to generate a digital twin of existing cities in Blender rendering engine.
+#. ObjectPile: We import open source collection of 3D objects in a table top environment with different textures wrapped over these objects as well as use dynamic lighting and depth of field effects for rendering. We also incorporate variational UV mapping to modify these objects in terms of both textures and structure.
+#. Object Fragmentation: This environment shows how an objects fall on a table top scene or collide with another object and breaks into a user-define N segments.
 
 For all these 3D environments, we currently support generation of high quality data using Cycles (or 'EEVEE' only for RGB and Depth) rendering engine with annotations:
-1. RGB Images
-2. Depth Maps
-3. Optical Flow
-4. Surface Normals
-5. Stereopsis
-6. Semantic Segmentation
-7. Event Camera Frames
+#. RGB Images
+#. Depth Maps
+#. Optical Flow
+#. Surface Normals
+#. Stereopsis
+#. Semantic Segmentation
+#. Event Camera Frames
 
 
 
@@ -51,6 +51,7 @@ Citation
 `Video <https://www.youtube.com/watch?v=IOz8-KL900A&pp=ygUPd29ybGRnZW4gcHJndW1k>`__
 
 BibTeX:
+
 * | @article{singh2022worldgen,
   | title={WorldGen: A Large Scale Generative Simulator},
   | author={Singh, Chahat Deep and Kumari, Riya and Ferm{\"u}ller, Cornelia and Sanket, Nitin J and Aloimonos, Yiannis},
