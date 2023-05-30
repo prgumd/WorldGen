@@ -2,15 +2,15 @@ Welcome to WorldGen's documentation!
 ===================================
 
 .. image:: ../images/logo/prg-black.png
-  :width: 30%
+  :width: 25%
   :alt: Perception and Robotics Group
 
 .. image:: ../images/logo/umd-logo.png
-  :width: 30%
+  :width: 25%
   :alt: University of Maryland - College Park
 
 .. image:: ../images/logo/WPIlogo.png
-  :width: 30%
+  :width: 25%
   :alt: Worcester Polytechnic Institute
 
 
