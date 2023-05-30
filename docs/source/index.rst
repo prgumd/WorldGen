@@ -52,7 +52,7 @@ Authors:
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Getting Started
 
    About WorldGen <About>
@@ -61,7 +61,7 @@ Authors:
    
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: WorldGen Setup
    
    Installation Guide <Installation>
@@ -69,7 +69,7 @@ Authors:
    
    
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: City Maps
 
    Create your First Digital Twin of a City <CityScenes>
@@ -78,19 +78,19 @@ Authors:
    WorldGen on Custom Data (Coming Soon) <> 
    
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Object Pile
  
    ObjectPile <ObjectPile>
    
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Object Fragmentation
  
    ObjectFragment <ObjectFragment>
    
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Rendering 
     
    Annotations <Annotations>
@@ -99,7 +99,7 @@ Authors:
    Physics <Physics>
    
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Extras
    
    Other Assets <other-assets>
