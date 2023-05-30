@@ -18,13 +18,13 @@ Authors:
         <iframe src="//www.youtube.com/embed/IOz8-KL900A" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
     </div>
 
-
+----
 
 .. note::
 
    This project is under active development.
 
-Contents
+
 --------
 
 .. toctree::
