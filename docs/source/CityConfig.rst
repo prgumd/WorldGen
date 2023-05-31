@@ -10,8 +10,11 @@ python_system_path: /usr/lib/python3.10 # Use the libraries from your system pyt
 
 .. list-table:: Config Parameters
     :widths: 5 10
+    :header-rows: 1
 
-
+    * - Parameters
+      - Values
+      
     * - python_system_path
       - Path to Python packages (e.g., "/home/chahatdeep/.local/lib/python3.8/site-packages"). The Python version must match the Blender Python version.
 
@@ -44,5 +47,48 @@ python_system_path: /usr/lib/python3.10 # Use the libraries from your system pyt
     * - class_names
       - ["Trees", "StreetLamps", "TwinBenches", "buildings", "roads", "Terrain", "buildings", "car"] # DO NOT TOUCH THIS
       
+      
+      
+.. list-table:: Camera Properties Parameters
+    :widths: 5 10
+    :header-rows: 1
 
-
+    * - Setting
+      - Value
+    
+    * - field_of_view
+      - float
+      
+    * - number_of_frames 
+      - int
+      
+    * - start_frame 
+      - int
+    
+    * - end_frame 
+      - int
+      
+    * - frame_step 
+      - int
+      
+    * - time_stretching 
+      - 0 to 100 # 100 is with no time-stretching
+      
+    * - shutter_time 
+      - float
+      
+    * - lens_focus_distance 
+      - float
+      
+    * - lens_aperture_fstop 
+      - float
+      
+    * - lens_aperture_ratio 
+      - float
+      
+    * - lens_type 
+      - 'PERSP', 'ORTHO', 'PANO'
+    
+    
+      
+   
