@@ -89,6 +89,39 @@ python_system_path: /usr/lib/python3.10 # Use the libraries from your system pyt
     * - lens_type 
       - 'PERSP', 'ORTHO', 'PANO'
     
+.. list-table:: Render Settings Parameters
+    :widths: 5 10
+    :header-rows: 1
+
+    * - enable_render_region
+      - boolean
     
+    * - enable_crop_to_render_region
+      - boolean
+      
+    * - render_noise_threshold 
+      - boolean
+      
+    * - render_max_samples 
+      - int
+    
+    * - render_time_limit 
+      - int
+      
+    * - render_denoiser 
+      - boolean
+      
+    * - enable_fast_GI 
+      - boolean
+      
+    * - enable_camera_clipping 
+      - [float, float]
+    
+      
+    
+    
+    
+      
+   
       
    
