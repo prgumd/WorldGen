@@ -1,7 +1,7 @@
 CityConfig
 ====
 
-A sample :code:`config.yaml` file looks like:
+The :code:`config.yaml` file contains the following parameters. Refer to WorldGen/config.yaml for a sample config file. : 
 
 .. list-table:: Config Parameters
     :widths: 5 10
