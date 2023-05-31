@@ -52,7 +52,7 @@ Linux
 
 ----
 
-5. Install pip3.10 in python if it is not default:
+5. Install :code:`pip3.10` in python if it is not default:
 
 .. code-block:: bash
     
