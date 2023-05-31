@@ -2,9 +2,10 @@ About WorldGen
 ====
 
 .. image:: ../images/paper/Banner.png
-  :width: 75%
+  :width: 90%
   :alt: WorldGen Banner Image
   :align: center
+
 
 Generative ability of WorldGen (shown in the figure above): (a) Comparison between Google Street View (left) and the same street in WorldGen (right), (b) Comparison of Google Maps satellite image vs. WorldGen top view, (c) Collection of 3D objects in motion, (d) Object fragmentation,(e) Annotation from left to right: depth, optical flow, surface normals, stereo anaglyph, image segmentation, event frame.
 
