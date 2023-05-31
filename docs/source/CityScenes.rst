@@ -29,6 +29,7 @@ Now, in the terminal, run
   
     .. code-block:: bash
           blender -b <path to blend file> -P run_worldgen.py
+          
 
 
 
