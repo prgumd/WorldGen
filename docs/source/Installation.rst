@@ -28,7 +28,8 @@ Linux
     wget https://mirrors.ocf.berkeley.edu/blender/release/Blender3.3/blender-3.3.7-linux-x64.tar.xz
     tar -xf blender-3.3.7-linux-x64.tar.xz
 
-3. Install Python 3.10 in your system
+3. Install Python 3.10 (same version of python in order to avoid package conflicts) in your system
+
 .. code-block:: bash
     sudo apt-get install python3.10 python3.10-dev
 
