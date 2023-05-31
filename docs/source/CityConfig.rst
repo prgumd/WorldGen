@@ -84,7 +84,8 @@ The :code:`config.yaml` file contains the following parameters. Refer to WorldGe
       
     * - lens_type 
       - 'PERSP', 'ORTHO', 'PANO'
-    
+
+
 .. list-table:: Render Settings Parameters
     :widths: 5 10
     :header-rows: 1
@@ -115,70 +116,70 @@ The :code:`config.yaml` file contains the following parameters. Refer to WorldGe
     
       
  
- The :code:`materials.yaml` file contains the textures and objects that is used to generate the city model. Refer to WorldGen/materials.yaml for a sample config file. We use the Lily Surface Scraper addon to import textures. Note: The material_name for ambientcg follows this format ambientCG/id_of_material/1K-JPG. To figure out the material_name from other sources, you can import the material on a plain cube in a new blend file and copy that name.
+The :code:`materials.yaml` file contains the textures and objects that is used to generate the city model. Refer to WorldGen/materials.yaml for a sample config file. We use the Lily Surface Scraper addon to import textures. Note: The material_name for ambientcg follows this format ambientCG/id_of_material/1K-JPG. To figure out the material_name from other sources, you can import the material on a plain cube in a new blend file and copy that name.
  
-    .. list-table:: Materials Parameters
+.. list-table:: Materials Parameters
     :widths: 5 10
     :header-rows: 1
 
     * - roof
       - {roof_textures_url : [], roof_textures_name}
-    
+
     * - terrain
       - {material_url: "", material_name:""}
-      
+
     * - tree_objects 
       - [] of objects
-      
+
     * - num_of_trees
       - int
-    
+
     * - street_lamp_obj 
-      - ""
-      
+      - string
+
     * - traffic_light_obj 
-      - ""
-      
+      - string
+
     * - street_textures 
       - {street_texture_url: "", street_texture_name: ""}
-      
+
     * - building_textures 
       - {building_texture_urls:[], building_texture_names:[]}
-     
+
     * - building_scale 
       - int
-    
+
     * - roof_objs 
       - [] of objects
-      
+
     * - car_objs 
       - [] of objects
-      
+
     * - num_of_cars
       - int
-    
+
     * - num_of_benches
       - int
-    
+
     * - num_of_street_lamps
       - int
-      
+
     * - max_number_of_roof_obj
       - int
-     
+
     * - roof_obj_scale
       - int
-    
+
     * - sky_hdri
       - ""
 
-      
-      
-    
-      
-    
-    
-      
-   
-      
-   
+
+
+
+
+
+
+
+
+
+
