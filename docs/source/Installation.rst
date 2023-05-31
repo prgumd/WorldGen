@@ -79,7 +79,8 @@ Linux
 8. Install OpenEXR
 
 .. code-block:: bash
-   pip3.10 install openexr imath
+   
+    pip3.10 install openexr imath
 
 .. note::
     If you run into errors while install openexr, please follow `this <https://stackoverflow.com/questions/72364623/modulenotfounderror-no-module-named-openexr-on-blender>`_.  
