@@ -2,22 +2,22 @@ Welcome to WorldGen's documentation!
 ===================================
 
 .. image:: ../images/logo/WorldGenLogo.svg
-  :width: 25%
+  :width: 40%
   :alt: Perception and Robotics Group
 
 
 **WorldGen** is an open source framework to automatically generate petabytes of annotated structured and unstructured 3D photorealistic scenes -- including city maps, multiple objects in motion and object fragmentation.
 
 .. image:: ../images/logo/prg-black.png
-  :width: 10%
+  :width: 15%
   :alt: Perception and Robotics Group
 
 .. image:: ../images/logo/umd-logo.png
-  :width: 10%
+  :width: 15%
   :alt: University of Maryland - College Park
 
 .. image:: ../images/logo/WPIlogo.jpg
-  :width: 10%
+  :width: 15%
   :alt: Worcester Polytechnic Institute
 
 
@@ -64,7 +64,7 @@ Table of Content
    :caption: Getting Started
 
    About WorldGen <About>
-   Why WorldGen?
+   Why WorldGen? <Why>
    LICENSE <LICENSE>
    
 
