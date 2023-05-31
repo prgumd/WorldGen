@@ -53,7 +53,7 @@ Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go 
 
 .. code-block:: bash
     
-    sudo apt-get install openexr, libopenexr-dev, zlib1g-dev
+    sudo apt-get install openexr libopenexr-dev zlib1g-dev
 
 #. Install `pip` packages in blender-python
 
