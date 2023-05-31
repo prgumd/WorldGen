@@ -28,26 +28,37 @@ Linux
     wget https://mirrors.ocf.berkeley.edu/blender/release/Blender3.3/blender-3.3.7-linux-x64.tar.xz
     tar -xf blender-3.3.7-linux-x64.tar.xz
 
+#. Install Python 3.10 in your system
+.. code-block:: bash
+    sudo apt-get install python3.10 python3.10-dev
+
+
 #. Create Blender alias and test run Blender with GUI
 
 .. code-block:: bash
-
-    echo "alias blender='$HOME/WorldGenBase/blender/blender-3.3.7-linux-x64/./blender'" >> ~/.bashrc
+    
+    # Add System Python Path to Blender
+    echo "PYTHONPATH=/usr/lib/python3.10" >> ~/.bashrc
+    echo "alias blender='$HOME/WorldGenBase/blender/blender-3.3.7-linux-x64/./blender --python-use-system-env'" >> ~/.bashrc
     source ~/.bashrc
     blender
-    
-Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go back to the terminal and continue with installing custom packages.
 
-#. Install pip in blender-python
+.. note::
+    Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go back to the terminal and continue with installing custom packages.
+
+.. note::
+   Blender comes with its own version to Python. Packages already in your system's Python will not be loaded into Blender unless you load them using Python Path.
+
+----
+
+#. Install pip3.10 in python if it is not default:
 
 .. code-block:: bash
     
-    cd blender-3.3.7-linux-x64/3.3/python/bin
+    cd $HOME/
     wget https://bootstrap.pypa.io/get-pip.py
-    ./python3.10 get-pip.py
-
-.. note::
-   Blender comes with its own version to Python. Packages already in your system's Python will not be loaded into Blender. We will install packages using `pip` installed in Blender location. Advanced users may load and use system's packages by importing system and python paths but it is not recommended.
+    python3.10 get-pip.py
+    python3.10 -m setup.py install
 
 #. Install Dependencies
 
@@ -59,11 +70,19 @@ Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go 
 
 .. code-block:: bash
     
-    cd $HOME/WorldGenBase/blender/blender-3.3.7-linux-x64/3.3/python/bin
-    ./pip install numpy scipy opencv-python matplotlib mathutils setuptools==65.2.0 imath openexr
-  
+    pip3.10 install numpy scipy opencv-python matplotlib mathutils setuptools==65.2.0
+
 .. note::
    To install pip packages in blender-python in future, use this as a reference.
+#. Install OpenEXR
+
+.. code-block:: bash
+   pip3.10 install openexr imath
+
+.. note::
+    If you run into errors while install openexr, please follow `this <https://stackoverflow.com/questions/72364623/modulenotfounderror-no-module-named-openexr-on-blender>`_.  
+   
+
    
 
 
