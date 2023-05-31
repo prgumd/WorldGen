@@ -35,6 +35,8 @@ Linux
     echo "alias blender='$HOME/WorldGenBase/blender/blender-3.3.7-linux-x64/./blender'" >> ~/.bashrc
     source ~/.bashrc
     blender
+    
+Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go back to the terminal and continue with installing custom packages.
 
 4. Install pip in blender-python
 
@@ -43,6 +45,9 @@ Linux
     cd blender-3.3.7-linux-x64/3.3/python/bin
     wget https://bootstrap.pypa.io/get-pip.py
     ./python3.10 get-pip.py
+
+.. note::
+   Blender comes with its own version to Python. Packages already in your system's Python will not be loaded into Blender. We will install packages using `pip` installed in Blender location. Advanced users may load and use system's packages by importing system and python paths but it is not recommended.
 
 5. Install Dependencies
 
@@ -56,9 +61,10 @@ Linux
     
     cd $HOME/WorldGenBase/blender/blender-3.3.7-linux-x64/3.3/python/bin
     ./pip install numpy scipy opencv-python matplotlib mathutils setuptools==65.2.0 imath openexr
-    
-
+  
 .. note::
+   Use this as a reference to install pip packages in blender-python.  
+
 
 
 
