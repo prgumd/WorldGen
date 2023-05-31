@@ -77,7 +77,7 @@ Table of Content
    :caption: City Maps
 
    Create your First Digital Twin of a City <CityScenes>
-   City Config Files <City Config>
+   City Config Files <CityConfig>
    Assets <Assets>
    WorldGen on Custom Data (Coming Soon) <> 
    
