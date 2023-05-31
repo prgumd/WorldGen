@@ -12,14 +12,14 @@ Installation Guide
 Linux
 =====
 
-#. System Package Update
+1. System Package Update
 
 .. code-block:: bash
     
     sudo apt update
     sudo apt upgrade
 
-#. Download and extract Blender.
+2. Download and extract Blender.
 
 .. code-block:: bash
 
@@ -28,12 +28,12 @@ Linux
     wget https://mirrors.ocf.berkeley.edu/blender/release/Blender3.3/blender-3.3.7-linux-x64.tar.xz
     tar -xf blender-3.3.7-linux-x64.tar.xz
 
-#. Install Python 3.10 in your system
+3. Install Python 3.10 in your system
 .. code-block:: bash
     sudo apt-get install python3.10 python3.10-dev
 
 
-#. Create Blender alias and test run Blender with GUI
+4. Create Blender alias and test run Blender with GUI
 
 .. code-block:: bash
     
@@ -51,7 +51,7 @@ Linux
 
 ----
 
-#. Install pip3.10 in python if it is not default:
+5. Install pip3.10 in python if it is not default:
 
 .. code-block:: bash
     
@@ -60,13 +60,13 @@ Linux
     python3.10 get-pip.py
     python3.10 -m setup.py install
 
-#. Install Dependencies
+6. Install Dependencies
 
 .. code-block:: bash
     
     sudo apt-get install openexr libopenexr-dev zlib1g-dev
 
-#. Install `pip` packages in blender-python
+7. Install `pip` packages in blender-python
 
 .. code-block:: bash
     
@@ -74,7 +74,8 @@ Linux
 
 .. note::
    To install pip packages in blender-python in future, use this as a reference.
-#. Install OpenEXR
+
+8. Install OpenEXR
 
 .. code-block:: bash
    pip3.10 install openexr imath
