@@ -12,14 +12,14 @@ Installation Guide
 Linux
 =====
 
-1. System Package Update
+#. System Package Update
 
 .. code-block:: bash
     
     sudo apt update
     sudo apt upgrade
 
-2. Download and extract Blender.
+#. Download and extract Blender.
 
 .. code-block:: bash
 
@@ -28,7 +28,7 @@ Linux
     wget https://mirrors.ocf.berkeley.edu/blender/release/Blender3.3/blender-3.3.7-linux-x64.tar.xz
     tar -xf blender-3.3.7-linux-x64.tar.xz
 
-3. Create Blender alias and test run Blender with GUI
+#. Create Blender alias and test run Blender with GUI
 
 .. code-block:: bash
 
@@ -38,7 +38,7 @@ Linux
     
 Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go back to the terminal and continue with installing custom packages.
 
-4. Install pip in blender-python
+#. Install pip in blender-python
 
 .. code-block:: bash
     
@@ -49,13 +49,13 @@ Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go 
 .. note::
    Blender comes with its own version to Python. Packages already in your system's Python will not be loaded into Blender. We will install packages using `pip` installed in Blender location. Advanced users may load and use system's packages by importing system and python paths but it is not recommended.
 
-5. Install Dependencies
+#. Install Dependencies
 
 .. code-block:: bash
     
     sudo apt-get install openexr, libopenexr-dev, zlib1g-dev
 
-6. Install `pip` packages in blender-python
+#. Install `pip` packages in blender-python
 
 .. code-block:: bash
     
@@ -63,7 +63,8 @@ Confirm you installed version is `3.3.7`. You can close the blender GUI now. Go 
     ./pip install numpy scipy opencv-python matplotlib mathutils setuptools==65.2.0 imath openexr
   
 .. note::
-   Use this as a reference to install pip packages in blender-python.  
+   To install pip packages in blender-python in future, use this as a reference.
+   
 
 
 
