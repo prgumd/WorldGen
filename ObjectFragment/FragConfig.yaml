@@ -1,0 +1,9 @@
+addon: object_fracture_cell
+filepath: /home/chahatdeep/Downloads/39-cup/Cup.obj
+scale: 0.25
+ground_size: 20
+ground_location: [0, 0, -1]
+output_path: frames/
+frame_start: 1
+frame_end: 100
+nObjects: 100
