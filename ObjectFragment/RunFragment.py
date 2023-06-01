@@ -171,6 +171,9 @@ if __name__ == "__main__":
     
     # Create a ground plane
     create_ground(config['ground_size'], tuple(config['ground_location']))
+    
+    # Save Current Blender File
+    bpy.ops.wm.save_as_mainfile(filepath=config['output_blend_path'])
 
     # Render the animation frames
     for frame in range(config['frame_start'], config['frame_end'] + 1):
